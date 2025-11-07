@@ -24,7 +24,7 @@ $ npm run dev
 
 Aplikacja korzysta z bazy danych Postgresql, dlatego upewnij się, że masz ją zainstalowaną.
 
-1. Skopiuj plik `.env.example`
+1. Skopiuj plik `.env.example` i zmień nazwę po prostu na `.env`
 2. W kluczu `DATABASE_URL` zamień `user` i `password` na nazwę użytkownika oraz hasło do Twojej bazy danych Postgresql. Możesz też na samym końcu zmienić `schema=smartmenu` na inną schemę, np. `schema=twoja-stara-baza-danych` czy coś.
 3. Wrzuć obecny stan schemy do bazy danych: `npx prisma db push`
 4. Wpisz `npx prisma generate` - to Ci wygeneruje różne klasy do obsługi Prismy.
