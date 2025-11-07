@@ -25,7 +25,7 @@ $ npm run dev
 Aplikacja korzysta z bazy danych Postgresql, dlatego upewnij się, że masz ją zainstalowaną.
 
 1. Skopiuj plik `.env.example`
-2. W kluczu `DATABASE_URL` zamień `user` i `password` na nazwę użytkownika oraz hasło do Twojej bazy danych Postgresql.
+2. W kluczu `DATABASE_URL` zamień `user` i `password` na nazwę użytkownika oraz hasło do Twojej bazy danych Postgresql. Możesz też na samym końcu zmienić `schema=smartmenu` na inną schemę, np. `schema=twoja-stara-baza-danych` czy coś.
 4. Zaseeduj sobie bazę: `npx prisma db seed`.
 5. Sprawdź czy dane wrzuciły się do bazy danych poprawnie: `npx prisma studio`. Jeżeli wszystko poszło dobrze to tak powinna wyglądać Twoja baza po zaseedowaniu:
 
