@@ -20,7 +20,7 @@ const MealCard = ({meal}: {meal: Meal}) => {
     >
     
     <h2 className='text-xl font-semibold wrap-break-words text-center leading-tight truncate sm:whitespace-normal'> {meal.name} </h2>
-    <p className='text-xs text-neutral-50'> {mealEmoji[meal.type]} </p> 
+    <p className='text-xs text-neutral-50 truncate'> {mealEmoji[meal.type]} </p> 
 
 
     </div>
