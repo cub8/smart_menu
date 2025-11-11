@@ -14,8 +14,10 @@ export default function Home() {
       >
         <h1 className="text-gray-400 text-xl font-extrabold">
           Smart Menu - tygodniowy planer posiłków
-          <br/> 
-          <Link href='/planner' className='text-amber-800 hover:bg-yellow-200 underline'>  Kliknij, aby zobaczyć planer. </Link>
+          <br/>
+          <Link href='/planner' className='text-amber-800 hover:bg-yellow-200 underline'> Kliknij, aby zobaczyć planer. </Link>
+          <br/>
+          <Link href='/meals' className='text-blue-800 hover:bg-blue-200 underline'> Zobacz listę posiłków. </Link>
         </h1>
       </div>
     </div>
