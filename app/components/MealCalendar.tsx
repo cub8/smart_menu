@@ -1,5 +1,5 @@
 "use client";
-import React from 'react'
+import type { EventContentArg } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -71,7 +71,6 @@ const sampleMeals: Meal[] = [
 ];
 
 const MealCalendar = () => {
-
     // kolejnosc ulozenia w kalendarzu
     const mealOrder = { breakfast: 1, lunch: 2, dinner: 3 };
 
@@ -85,14 +84,14 @@ const MealCalendar = () => {
         order: mealOrder[m.type],
     }));
 
-    const eventWeekContent = (arg: any) => {
-        const meal: Meal = arg.event.extendedProps; //arg.event.extendedProps to obiekt Meal
+    const eventWeekContent = (arg: EventContentArg) => {
+        const meal: Meal = arg.event.extendedProps as Meal; //arg.event.extendedProps to obiekt Meal
         // trzeba zwrocic
         return <MealCardWeek meal={meal} />;
     };
 
-    const eventMonthContent = (arg: any) => {
-        const meal: Meal = arg.event.extendedProps; //arg.event.extendedProps to obiekt Meal
+    const eventMonthContent = (arg: EventContentArg) => {
+        const meal: Meal = arg.event.extendedProps as Meal; //arg.event.extendedProps to obiekt Meal
         return <MealCardMonth meal={meal} />;
     };
 
@@ -100,28 +99,27 @@ const MealCalendar = () => {
   return (
 
     <div> 
-    <div className='mx-auto max-w-5xl h-fit'>
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        initialView="dayGridWeek"
-        headerToolbar={{ left: "prev,next today", center: "title", right: "dayGridWeek,dayGridMonth" }}
-        locales={[plLocale]}
-        locale="pl"
-        events={events}
-        eventOrder={["order"]}
-        contentHeight="auto"
-        views={{
-          dayGridWeek: {
-            eventContent: eventWeekContent,
-          },
+      <div className='mx-auto max-w-5xl h-fit'>
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridWeek"
+          headerToolbar={{ left: "prev,next today", center: "title", right: "dayGridWeek,dayGridMonth" }}
+          locales={[plLocale]}
+          locale="pl"
+          events={events}
+          eventOrder={["order"]}
+          contentHeight="auto"
+          views={{
+            dayGridWeek: {
+              eventContent: eventWeekContent,
+            },
 
-          dayGridMonth: {
-            eventContent: eventMonthContent,
-          },
-        }}
-
-      />
-    </div>
+            dayGridMonth: {
+              eventContent: eventMonthContent,
+            },
+          }}
+        />
+      </div>
 
     </div>
 

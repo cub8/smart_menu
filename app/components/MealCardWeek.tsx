@@ -1,5 +1,4 @@
 "use client";
-import React from 'react'
 import { Meal } from '../models/meal';
 
 const MealCard = ({meal}: {meal: Meal}) => {
