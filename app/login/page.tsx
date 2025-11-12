@@ -65,11 +65,6 @@ export default function LoginPage() {
             {loading ? "Logowanie..." : "Zaloguj"}
           </button>
         </form>
-        <p className="text-xs text-gray-500 mt-4">
-          Tryb: {process.env.NEXT_PUBLIC_MOCK === "true" ? "MOCK" : "PROD"}
-        </p>
-        <p className="text-xs text-gray-500 mt-1">
-        </p>
       </div>
     </main>
   );
