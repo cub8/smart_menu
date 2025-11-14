@@ -14,7 +14,7 @@ const sampleMeals: Meal[] = [
   {
     id: "1",
     name: "Owsianka z owocami",
-    date: "2025-11-06",
+    date: "2025-11-12",
     type: "breakfast",
     ingredients: ["płatki owsiane", "mleko", "maliny"]
   },
