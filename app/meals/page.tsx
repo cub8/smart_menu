@@ -33,7 +33,7 @@ export default async function MealsPage() {
                   <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
                     {meal.name}
 
-                  // Testowe wyświetlanie userow w liscie 
+                  {/* Testowe wyświetlanie userow w liscie */}
                     {meal.users.map(user => (
                     <p key={user.id}> Posiłek należy do: {user.name}</p>
                       ))}
