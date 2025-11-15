@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma"
 import Link from "next/link"
 
 export default async function MealsPage() {
-  const meals = await prisma.meal.findMany({ orderBy: { id: "asc" }, include: { users: true } })
+  const meals = await prisma.meal.findMany({ orderBy: { id: "asc" } })
 
   return (
     <div className="relative">
@@ -32,11 +32,6 @@ export default async function MealsPage() {
                 <div className="p-5">
                   <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
                     {meal.name}
-
-                  {/* Testowe wyświetlanie userow w liscie */}
-                    {meal.users.map(user => (
-                    <p key={user.id}> Posiłek należy do: {user.name}</p>
-                      ))}
                   </h2>
 
                   {meal.description ? (

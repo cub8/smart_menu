@@ -14,7 +14,13 @@ model Meal {
   tags        String[]
   ingredients String[]
   description String
-  users User[] // many-to-many
+  mealPlans MealPlan[] //one to many
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
 }
 
 model Tag {
@@ -28,5 +34,15 @@ model User {
   password  String
   name      String?
   createdAt DateTime @default(now())
-  meals Meal[]  // many-to-many
+  mealPlans MealPlan[]  //one to many
+}
+
+model MealPlan {
+  id Int @id @default(autoincrement())
+  date DateTime
+  type MealType
+  mealId Int
+  meal Meal @relation(fields: [mealId], references: [id])
+  userId String
+  user User @relation(fields: [userId], references: [id])
 }
