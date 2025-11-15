@@ -14,9 +14,19 @@ model Meal {
   tags        String[]
   ingredients String[]
   description String
+  users User[] // many-to-many
 }
 
 model Tag {
   id   Int    @id @default(autoincrement())
   name String
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  meals Meal[]  // many-to-many
 }
