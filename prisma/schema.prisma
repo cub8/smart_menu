@@ -14,9 +14,35 @@ model Meal {
   tags        String[]
   ingredients String[]
   description String
+  mealPlans MealPlan[] //one to many
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
 }
 
 model Tag {
   id   Int    @id @default(autoincrement())
   name String
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  mealPlans MealPlan[]  //one to many
+}
+
+model MealPlan {
+  id Int @id @default(autoincrement())
+  date DateTime
+  type MealType
+  mealId Int
+  meal Meal @relation(fields: [mealId], references: [id])
+  userId String
+  user User @relation(fields: [userId], references: [id])
 }

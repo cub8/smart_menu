@@ -1,12 +1,13 @@
 "use client";
-import { Meal } from '../models/meal';
+import {  Meal} from "../generated/prisma/client";
+import { MealType } from "../generated/prisma/enums";
 
-const MealCard = ({meal}: {meal: Meal}) => {
+const MealCard = ({meal, type}: {meal: Meal, type: MealType}) => {
 
     const mealEmoji: Record<string, string> = {
-    breakfast: "Śniadanie ☕🥐",
-    lunch: "Obiad 🍝🍲",
-    dinner: "Kolacja 🍵🍛",
+    BREAKFAST: "Śniadanie ☕🥐",
+    LUNCH: "Obiad 🍝🍲",
+    DINNER: "Kolacja 🍵🍛",
     };
 
   return (
@@ -19,8 +20,7 @@ const MealCard = ({meal}: {meal: Meal}) => {
     >
     
     <h2 className='text-xl font-semibold wrap-break-words text-center leading-tight truncate sm:whitespace-normal'> {meal.name} </h2>
-    <p className='text-xs text-neutral-50 truncate'> {mealEmoji[meal.type]} </p> 
-
+    <p className='text-xs'> {mealEmoji[type]} </p> 
 
     </div>
   )

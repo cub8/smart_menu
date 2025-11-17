@@ -1,29 +1,22 @@
-/**
- * Miejsce na podmianę na realny odczyt z DB. Tutaj prawie cały plik do zmiany
+import prisma from "@/lib/prisma";
+import bcrypt from "bcrypt";
+
+/*
+  Dodana realna walidacja uzytkownika
  */
 
-type AppUser = { id: string; email: string; name?: string; passwordHash?: string };
+export async function validateUser(email: string, password: string) {
 
-const MOCK = process.env.MOCK_AUTH === "true";
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) return null;
+  
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) return null;
 
-/**
- * W trybie MOCK – prosty, jawny użytkownik testowy.
- * email: demo@demo.com, hasło: demo123
- */
-const MOCK_USER: AppUser = {
-  id: "mock-user-1",
-  email: "demo@demo.com",
-  name: "Demo User",
-  // Password trzymamy tu jawnie tylko na czas dev 
-};
 
-export async function validateUser(email: string, password: string): Promise<AppUser | null> {
-  if (MOCK) {
-    if (email === MOCK_USER.email && password === "demo123") return MOCK_USER;
-    return null;
-  }
-
-  throw new Error(
-    "Realna walidacja użytkownika nie jest jeszcze podłączona."
-  );
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+  };
 }

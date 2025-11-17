@@ -40,3 +40,13 @@ Jeżeli wszystko poszło dobrze to tak powinna wyglądać Twoja baza po zaseedow
 1. Edytujesz plik `prisma/schema.prisma`
 2. Wpisujesz komendę `npx prisma migrate dev --name <nazwa migracji>`
 3. Migracja sama się wykonuje. Aby upewnić się, że wszystko zadziałało normalnie użyj komendy `npx prisma db pull` - pobiera ona aktualną schemę z bazy danych i nadpisuje plik `schema.prisma`. Jeżeli wszystko jest ok to zawartość pliku się nie zmieni (za wyjątkiem np. innej kolejności tabel).
+
+### Reset bazy danych
+Aby zresetować bazę użyj polecenia `npx prisma migrate reset`
+
+Polecenie to:
+1. Usuwa wszystkie dane z bazy
+2. Generuje wszystie migracje oraz klienta Prismy na nowo
+3. Jeśli obecny jest plik `seed.ts` - również uzupełnia danymi startowymi
+
+Sprawdza się podczas testowania przy częstych zmianach w pliku `seed.ts`.
