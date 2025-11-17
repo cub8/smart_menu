@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma } from "@/app/generated/prisma/client"
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient()
 
@@ -78,12 +79,12 @@ const userData: Prisma.UserCreateInput[] = [
     { id: "iuasghuii1",
         name: "Igor Dev",
         email: "igor.dev@gmail.com",
-        password: "$2a$12$1dIbLh4yv4F2yoNfpjCcuey0XPgLKS3U2HCSa6Sd5MWxR1FDVacL6" // hash dla test123
+        password: "test123" 
      },
     { id: "hjsaj1",
         name: "Piotrek Tester",
         email: "piter.zalin@wp.pl",
-        password: "$2a$12$1dIbLh4yv4F2yoNfpjCcuey0XPgLKS3U2HCSa6Sd5MWxR1FDVacL6" 
+        password: "test123" 
      },
 ]
 
@@ -197,12 +198,6 @@ const mealPlanData: Prisma.MealPlanCreateInput[] = [
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-18"),
-        type: "LUNCH",
-        meal: { connect: { id: 11 } },
-        user: { connect: { id: "hjsaj1" } }
-    },
-    {
         date: new Date("2025-11-20"),
         type: "DINNER",
         meal: { connect: { id: 4 } },
@@ -229,7 +224,16 @@ export async function main() {
     }
     
     for (const user of userData) {
-        await prisma.user.create({ data: user })
+        const hashedPassword = await bcrypt.hash(user.password, 12);
+
+        await prisma.user.create({ 
+            data: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            password: hashedPassword // do bazy zapisujemy hash
+            }
+        })
     }
     
     for (const plan of mealPlanData) {
@@ -238,3 +242,4 @@ export async function main() {
 }
 
 main()
+  .catch((e) => console.error(e))
