@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import LogoutButton from "./components/LogoutButton";
+import Link from "next/link";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -23,15 +24,23 @@ export default function RootLayout({
         <Providers>
           <header className="sticky top-0 z-50 w-full border-b border-violet-300 bg-[#EDE4FF]">
             <div className="w-full h-14 px-4 flex items-center justify-between">
-              <span className="font-semibold tracking-tight text-violet-700">SmartMenu</span>
-              <LogoutButton />
+              <span className="font-semibold tracking-tight text-violet-700">
+                SmartMenu
+              </span>
+
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/profile"
+                  className="rounded-xl border border-purple-300 px-3 py-1 text-sm text-purple-700 hover:bg-purple-100"
+                >
+                  Profil
+                </Link>
+                <LogoutButton />
+              </div>
             </div>
           </header>
 
-
-          <main>
-            {children}
-          </main>
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
