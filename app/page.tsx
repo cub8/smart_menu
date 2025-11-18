@@ -29,6 +29,10 @@ export default async function Home() {
           <Link href="/meals" className="text-blue-800 hover:bg-blue-200 underline">
             Zobacz listę posiłków.
           </Link>
+          <br />
+          <Link href="/profile" className="text-green-800 hover:bg-green-200 underline">
+            Ustaw preferencje żywieniowe.
+          </Link>
         </h2>
       </div>
     </div>
