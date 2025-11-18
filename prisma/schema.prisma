@@ -50,11 +50,9 @@ model MealPlan {
 }
 
 model UserPreference {
-  id     Int    @id @default(autoincrement())
   userId String
   tagId  Int
-  user   User   @relation(fields: [userId], references: [id])
-  tag    Tag    @relation(fields: [tagId], references: [id])
-
-  @@unique([userId, tagId])
+  user User @relation(fields: [userId], references: [id])
+  tag  Tag  @relation(fields: [tagId], references: [id])
+  @@id([userId, tagId])
 }
