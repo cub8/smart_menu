@@ -9,12 +9,12 @@ datasource db {
 }
 
 model Meal {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
   tags        String[]
   ingredients String[]
   description String
-  mealPlans MealPlan[] //one to many
+  mealPlans   MealPlan[] //one to many
 }
 
 enum MealType {
@@ -24,25 +24,37 @@ enum MealType {
 }
 
 model Tag {
-  id   Int    @id @default(autoincrement())
-  name String
+  id              Int              @id @default(autoincrement())
+  name            String
+  userPreferences UserPreference[]
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  name      String?
-  createdAt DateTime @default(now())
-  mealPlans MealPlan[]  //one to many
+  id          String           @id @default(cuid())
+  email       String           @unique
+  password    String
+  name        String?
+  createdAt   DateTime         @default(now())
+  mealPlans   MealPlan[] //one to many
+  preferences UserPreference[]
 }
 
 model MealPlan {
-  id Int @id @default(autoincrement())
-  date DateTime
-  type MealType
+  id     Int      @id @default(autoincrement())
+  date   DateTime
+  type   MealType
   mealId Int
-  meal Meal @relation(fields: [mealId], references: [id])
+  meal   Meal     @relation(fields: [mealId], references: [id])
   userId String
-  user User @relation(fields: [userId], references: [id])
+  user   User     @relation(fields: [userId], references: [id])
+}
+
+model UserPreference {
+  id     Int    @id @default(autoincrement())
+  userId String
+  tagId  Int
+  user   User   @relation(fields: [userId], references: [id])
+  tag    Tag    @relation(fields: [tagId], references: [id])
+
+  @@unique([userId, tagId])
 }
