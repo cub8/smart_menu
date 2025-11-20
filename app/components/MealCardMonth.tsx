@@ -1,30 +1,36 @@
 "use client";
-import {  Meal} from "../generated/prisma/client";
+import { Meal } from "../generated/prisma/client";
 import { MealType } from "../generated/prisma/enums";
 
-const MealCardMonth = ({meal, type}: {meal: Meal, type: MealType}) => {
+type MealCardMonthProps = {
+  meal: Meal;
+  type: MealType;
+  mobile?: boolean; // opcjonalny flag, czy renderujemy mobilnie
+};
 
-    const mealEmoji: Record<string, string> = {
+const MealCardMonth = ({ meal, type, mobile = false }: MealCardMonthProps) => {
+  const mealEmoji: Record<string, string> = {
     BREAKFAST: "☕🥐",
     LUNCH: "🍝🍲",
     DINNER: "🍵🍛",
-    };
+  };
 
+  if (mobile) {
+    // mobile: tylko emoji
+    return (
+      <div className="text-center text-xs bg-violet-600 text-white rounded shadow p-1">
+        {mealEmoji[type]}
+      </div>
+    );
+  }
+
+  // desktop: pełna karta
   return (
-
-    <div className='
-    flex flex-row justify-between center 
-    p-2
-    shadow-md 
-    bg-violet-600 text-lg text-center text-neutral-100'
-    >
-    
-    <h2 className='text-sm font-semibold wrap-break-words text-center leading-tight truncate sm:whitespace-normal'> {meal.name} </h2>
-    <p className='text-xs'> {mealEmoji[type]} </p> 
-
-
+    <div className="flex flex-row justify-between items-center p-2 shadow-md bg-violet-600 text-sm text-white rounded">
+      <h2 className="font-semibold leading-tight">{meal.name}</h2>
+      <p className="text-xs">{mealEmoji[type]}</p>
     </div>
-  )
-}
+  );
+};
 
-export default MealCardMonth
+export default MealCardMonth;
