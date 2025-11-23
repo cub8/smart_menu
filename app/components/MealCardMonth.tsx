@@ -5,7 +5,7 @@ import { MealType } from "../generated/prisma/enums";
 type MealCardMonthProps = {
   meal: Meal;
   type: MealType;
-  mobile?: boolean; // opcjonalny flag, czy renderujemy mobilnie
+  mobile?: boolean;
 };
 
 const MealCardMonth = ({ meal, type, mobile = false }: MealCardMonthProps) => {
@@ -16,19 +16,22 @@ const MealCardMonth = ({ meal, type, mobile = false }: MealCardMonthProps) => {
   };
 
   if (mobile) {
-    // mobile: tylko emoji
     return (
-      <div className="text-center text-xs bg-violet-600 text-white rounded shadow p-1">
+      <div className="text-center text-[10px] bg-violet-600 text-white rounded shadow px-1 py-0.5">
         {mealEmoji[type]}
       </div>
     );
   }
 
-  // desktop: pełna karta
   return (
-    <div className="flex flex-row justify-between items-center p-2 shadow-md bg-violet-600 text-sm text-white rounded">
-      <h2 className="font-semibold leading-tight">{meal.name}</h2>
-      <p className="text-xs">{mealEmoji[type]}</p>
+    <div className="w-full max-w-full rounded-md bg-violet-600 text-white px-1.5 py-1 leading-tight">
+      <div className="flex items-start gap-1">
+        <span className="shrink-0 text-xs">{mealEmoji[type]}</span>
+
+        <span className="text-[10px] sm:text-xs whitespace-normal break-words text-left">
+          {meal.name}
+        </span>
+      </div>
     </div>
   );
 };
