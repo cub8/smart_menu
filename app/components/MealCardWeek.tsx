@@ -5,9 +5,10 @@ import { MealType } from "../generated/prisma/enums";
 const MealCard = ({meal, type}: {meal: Meal, type: MealType}) => {
 
     const mealEmoji: Record<string, string> = {
-    BREAKFAST: "Śniadanie ☕🥐",
-    LUNCH: "Obiad 🍝🍲",
-    DINNER: "Kolacja 🍵🍛",
+      BREAKFAST: "Śniadanie ☕🥐",
+      LUNCH: "Obiad 🍝🍲",
+      DINNER: "Kolacja 🍵🍛",
+      DESSERT: "Deser 🍰🍦",
     };
 
   return (
