@@ -158,7 +158,7 @@ const mealPlanData: SeedMealPlan[] = [
     },
     {
         date: "2025-11-18",
-        type: "LUNCH",
+        type: "DESSERT",
         meal: "Jabłecznik domowy",
         user: { connect: { id: "iuasghuii1" } }
     },
