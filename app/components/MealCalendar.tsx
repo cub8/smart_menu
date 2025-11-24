@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import type { EventContentArg, EventClickArg, EventDropArg } from "@fullcalendar/core";
+import React, { useEffect, useState } from "react";
+import type {
+  EventContentArg,
+  EventClickArg,
+  EventDropArg,
+} from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -32,6 +36,15 @@ const mealOrder: Record<string, number> = {
 };
 
 const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkSize = () => setIsMobile(window.innerWidth < 1050);
+    checkSize();
+    window.addEventListener("resize", checkSize);
+    return () => window.removeEventListener("resize", checkSize);
+  }, []);
+
   const [events, setEvents] = useState<CalendarEvent[]>(() =>
     mealPlan.map((m) => ({
       id: String(m.id),
@@ -43,7 +56,27 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
     }))
   );
 
-  const [selectedMeal, setSelectedMeal] = useState<Meal | null>(null);
+  useEffect(() => {
+    setEvents(
+      mealPlan.map((m) => ({
+        id: String(m.id),
+        title: m.meal.name,
+        start: m.date,
+        allDay: true,
+        extendedProps: m,
+        order: mealOrder[m.type as keyof typeof mealOrder] ?? 99,
+      }))
+    );
+  }, [mealPlan]);
+
+  const [selectedMeal, setSelectedMeal] = useState<MealPlanWithMeal | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEventClick = (arg: EventClickArg) => {
+    const mealPlan = arg.event.extendedProps as MealPlanWithMeal;
+    setSelectedMeal(mealPlan);
+    setShowModal(true);
+  };
 
   const handleEventDrop = async (arg: EventDropArg) => {
     const { event } = arg;
@@ -82,11 +115,6 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
     }
   };
 
-  const handleEventClick = (arg: EventClickArg) => {
-    const mealPlan = arg.event.extendedProps as MealPlanWithMeal;
-    setSelectedMeal(mealPlan.meal);
-  };
-
   const eventWeekContent = (arg: EventContentArg) => {
     const mealPlan = arg.event.extendedProps as MealPlanWithMeal;
     return <MealCardWeek meal={mealPlan.meal} type={mealPlan.type} />;
@@ -94,20 +122,69 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
 
   const eventMonthContent = (arg: EventContentArg) => {
     const mealPlan = arg.event.extendedProps as MealPlanWithMeal;
-    return <MealCardMonth meal={mealPlan.meal} type={mealPlan.type} />;
+    return (
+      <MealCardMonth
+        meal={mealPlan.meal}
+        type={mealPlan.type}
+        mobile={isMobile}
+      />
+    );
   };
 
   return (
-    <div>
-      <div className="mx-auto max-w-5xl h-fit">
+    <>
+      {showModal && selectedMeal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+            <h2 className="mb-2 text-xl font-semibold text-purple-700">
+              {selectedMeal.meal.name}
+            </h2>
+
+            <p className="mb-4 text-sm text-gray-800">
+              {selectedMeal.meal.description}
+            </p>
+
+            {selectedMeal.meal.ingredients?.length > 0 && (
+              <div className="mb-4">
+                <h3 className="mb-1 text-sm font-semibold text-gray-900">
+                  Składniki:
+                </h3>
+                <ul className="list-disc space-y-1 pl-5 text-sm text-gray-800">
+                  {selectedMeal.meal.ingredients.map((ing, i) => (
+                    <li key={i}>{ing}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <button
+              onClick={() => setShowModal(false)}
+              className="rounded-lg bg-purple-500 px-4 py-2 text-sm font-medium text-white hover:bg-purple-600"
+            >
+              Zamknij
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="mx-auto h-fit max-w-5xl">
         <FullCalendar
+          key={isMobile ? "mobile" : "desktop"}
           plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridWeek"
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridWeek,dayGridMonth",
-          }}
+          initialView={isMobile ? "dayGridDay" : "dayGridWeek"}
+          headerToolbar={
+            isMobile
+              ? {
+                  left: "prev,next",
+                  center: "title",
+                  right: "dayGridDay,dayGridMonth",
+                }
+              : {
+                  left: "prev,next today",
+                  center: "title",
+                  right: "dayGridWeek,dayGridMonth",
+                }
+          }
           locales={[plLocale]}
           locale="pl"
           events={events}
@@ -116,53 +193,15 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
           eventDrop={handleEventDrop}
           eventClick={handleEventClick}
           contentHeight="auto"
+          expandRows={!isMobile}
           views={{
-            dayGridWeek: {
-              eventContent: eventWeekContent,
-            },
-            dayGridMonth: {
-              eventContent: eventMonthContent,
-            },
+            dayGridDay: { eventContent: eventWeekContent },
+            dayGridWeek: { eventContent: eventWeekContent },
+            dayGridMonth: { eventContent: eventMonthContent },
           }}
         />
       </div>
-
-      {selectedMeal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-[90%] p-6">
-            <h2 className="text-xl font-semibold mb-3 text-violet-700">
-              {selectedMeal.name}
-            </h2>
-
-            <p className="text-sm text-gray-700 whitespace-pre-line">
-              {selectedMeal.description}
-            </p>
-
-            {selectedMeal.ingredients && selectedMeal.ingredients.length > 0 && (
-              <div className="mt-4">
-                <h3 className="text-sm font-semibold text-gray-800 mb-1">
-                  Składniki:
-                </h3>
-                <ul className="list-disc list-inside text-sm text-gray-700 space-y-0.5">
-                  {selectedMeal.ingredients.map((ing, idx) => (
-                    <li key={idx}>{ing}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="mt-6 flex justify-end">
-              <button
-                onClick={() => setSelectedMeal(null)}
-                className="px-4 py-1.5 rounded-lg text-sm font-medium bg-violet-600 text-white hover:bg-violet-700 transition"
-              >
-                Zamknij
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
