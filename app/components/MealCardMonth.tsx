@@ -13,6 +13,7 @@ const MealCardMonth = ({ meal, type, mobile = false }: MealCardMonthProps) => {
     BREAKFAST: "☕🥐",
     LUNCH: "🍝🍲",
     DINNER: "🍵🍛",
+    DESSERT: "🍰🍦",
   };
 
   if (mobile) {

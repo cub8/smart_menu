@@ -14,19 +14,11 @@ import React from 'react'
 type MealPlanWithMeal = MealPlan & { meal: Meal };
 
 type MealCalendarProps = {
-  mealPlan: any[]; 
-};
-
-const mealEmoji: Record<string, string> = {
-  BREAKFAST: "🥐",
-  LUNCH: "🍝",
-  DINNER: "🍵",
+  mealPlan: MealPlanWithMeal[]; 
 };
 
 
 const MealCalendar = ({mealPlan}: MealCalendarProps) => {
-
-
     // wykrywanie czy mobilne
 
     const [isMobile, setIsMobile] = React.useState(false);
@@ -43,7 +35,7 @@ const MealCalendar = ({mealPlan}: MealCalendarProps) => {
     const mealOrder = { BREAKFAST: 1, LUNCH: 2, DINNER: 3 };
 
     // mapowanie na eventy dla Full Calendar
-    const events = mealPlan.map((m) => ({
+    const events = mealPlan.map((m: MealPlanWithMeal) => ({
         id: String(m.id),
         title: m.meal.name,
         start: m.date,
