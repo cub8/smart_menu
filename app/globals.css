@@ -26,104 +26,55 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* STYLE DLA KALENDARZA */
 
-/* Przycisk */
 .fc .fc-button {
   @apply bg-purple-200 text-gray-800 px-3 py-1 rounded-md hover:bg-purple-400 active:bg-purple-800 transition;
 }
 
-/* Odstępy między przyciskami */
 .fc .fc-button-group > .fc-button:not(:last-child) {
   margin-right: 1.5rem;
 }
 
-/* Tytuł - data*/
 .fc .fc-toolbar-title {
   @apply text-3xl font-semibold text-gray-700 ml-5 mr-5;
 }
 
-/* Caly naglowek */
 .fc .fc-toolbar {
   @apply mb-4 flex items-center justify-between;
 }
 
-/* duze kafelki */
 .fc .fc-daygrid-day-frame {
   min-height: 160px;
 }
 
-/* odstęp pionowy między eventami w dayGrid */
-.fc .fc-daygrid-event {
-  margin: 18px 6px !important;
-}
-
-/* --- FullCalendar reset styli --- */
-
-/* TLO event */
-.fc .fc-daygrid-event {
-  position: relative !important;
-  height: auto !important;
-  min-height: 1.5em;
-  line-height: 1.2 !important;
-  white-space: normal !important;
-  background: transparent !important;
-  border: none !important;
-  overflow: visible !important;
-}
-
-/* Srodek eventu */
+.fc .fc-daygrid-event,
 .fc .fc-event-main {
   background: transparent !important;
   border: none !important;
-  white-space: normal !important;
-  overflow: visible !important;
 }
 
-/* Hover i focus */
-.fc .fc-daygrid-event:hover,
-.fc .fc-daygrid-event:focus {
-  background: transparent !important;
-}
-
-
-
-/* Kalendarz mobilny */
-
-
+/* MOBILE */
 @media (max-width: 768px) {
-
-  /* Zmniejszamy tytuł */
   .fc .fc-toolbar-title {
     font-size: 1.1rem;
   }
 
-  /* Mniejsza wysokość headera */
   .fc .fc-toolbar.fc-header-toolbar {
     padding: 4px 0;
     flex-direction: column;
     gap: 4px;
   }
 
-  /* Komórki w dayGridMonth */
   .fc .fc-daygrid-day-number {
     font-size: 0.7rem;
     padding: 2px;
   }
 
-  /* Kompaktowe komórki */
   .fc .fc-daygrid-day-frame {
     padding: 2px;
   }
 
-  /* Ograniczamy wysokość, żeby mieścił się na ekranie */
   .fc .fc-daygrid-body {
     min-height: 350px !important;
-  }
-
-  /* Eventy w month view - mniejsze */
-  .fc .fc-daygrid-event {
-    font-size: 0.65rem;
-    padding: 1px 2px;
   }
 }
