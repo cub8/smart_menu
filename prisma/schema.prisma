@@ -11,22 +11,17 @@ datasource db {
 model Meal {
   id          Int        @id @default(autoincrement())
   name        String
-  tags        String[]
   ingredients String[]
   description String
   mealPlans   MealPlan[] //one to many
-}
-
-enum MealType {
-  BREAKFAST
-  LUNCH
-  DINNER
+  tags        Tag[]      @relation("MealTags")
 }
 
 model Tag {
   id              Int              @id @default(autoincrement())
   name            String
   userPreferences UserPreference[]
+  meals           Meal[]           @relation("MealTags")
 }
 
 model User {
@@ -37,6 +32,13 @@ model User {
   createdAt   DateTime         @default(now())
   mealPlans   MealPlan[] //one to many
   preferences UserPreference[]
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
+  DESSERT
 }
 
 model MealPlan {
@@ -52,7 +54,8 @@ model MealPlan {
 model UserPreference {
   userId String
   tagId  Int
-  user User @relation(fields: [userId], references: [id])
-  tag  Tag  @relation(fields: [tagId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  tag    Tag    @relation(fields: [tagId], references: [id])
+
   @@id([userId, tagId])
 }

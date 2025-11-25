@@ -3,7 +3,23 @@ import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient()
 
-const mealsData: Prisma.MealCreateInput[] = [
+const tagsData: Prisma.TagCreateInput[] = [
+    { name: "Nabiał" },
+    { name: "Wegetariańskie" },
+    { name: "Owoce" },
+    { name: "Mięso" },
+    { name: "Deser" },
+    { name: "Śniadanie" }
+]
+
+type SeedMeal = {
+    name: string
+    tags: string[]
+    ingredients: string[]
+    description: string
+}
+
+const mealsData: SeedMeal[] = [
     {
         name: "Owsianka z owocami",
         tags: ["Wegetariańskie", "Nabiał", "Śniadanie"],
@@ -66,15 +82,6 @@ const mealsData: Prisma.MealCreateInput[] = [
     },
 ]
 
-const tagsData: Prisma.TagCreateInput[] = [
-    { name: "Nabiał" },
-    { name: "Wegetariańskie" },
-    { name: "Owoce" },
-    { name: "Mięso" },
-    { name: "Deser" },
-    { name: "Śniadanie" }
-]
-
 const userData: Prisma.UserCreateInput[] = [
     { id: "iuasghuii1",
         name: "Igor Dev",
@@ -88,156 +95,196 @@ const userData: Prisma.UserCreateInput[] = [
      },
 ]
 
-const mealPlanData: Prisma.MealPlanCreateInput[] = [
+type SeedMealPlan = {
+    date: string,
+    type: "BREAKFAST" | "LUNCH" | "DINNER" | "DESSERT",
+    meal: string,
+    user: { 
+        connect: { 
+            id: string 
+        } 
+    }
+}
+
+
+const mealPlanData: SeedMealPlan[] = [
     {
-        date: new Date("2025-11-11"), 
+        date: "2025-11-11", 
         type: "BREAKFAST",
-        meal: { connect: { id: 1 } },
+        meal: "Owsianka z owocami",
         user: { connect: { id: "iuasghuii1" } }
     },
         {
-        date: new Date("2025-11-10"),
+        date: "2025-11-10",
         type: "LUNCH",
-        meal: { connect: { id: 3 } },
+        meal: "Kurczak curry z ryżem",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-12"),
+        date: "2025-11-12",
         type: "BREAKFAST",
-        meal: { connect: { id: 2 } },
+        meal: "Sałatka grecka",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-13"),
+        date: "2025-11-13",
         type: "DINNER",
-        meal: { connect: { id: 5 } },
+        meal: "Jabłecznik domowy",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-14"),
+        date: "2025-11-14",
         type: "LUNCH",
-        meal: { connect: { id: 1 } },
+        meal: "Owsianka z owocami",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-15"),
+        date: "2025-11-15",
         type: "BREAKFAST",
-        meal: { connect: { id: 4 } },
+        meal: "Makaron aglio e olio",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-16"),
+        date: "2025-11-16",
         type: "DINNER",
-        meal: { connect: { id: 2 } },
+        meal: "Sałatka grecka",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-17"),
+        date: "2025-11-17",
         type: "BREAKFAST",
-        meal: { connect: { id: 3 } },
+        meal: "Kurczak curry z ryżem",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-18"),
-        type: "LUNCH",
-        meal: { connect: { id: 5 } },
+        date: "2025-11-18",
+        type: "DESSERT",
+        meal: "Jabłecznik domowy",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-20"),
+        date: "2025-11-20",
         type: "DINNER",
-        meal: { connect: { id: 1 } },
+        meal: "Owsianka z owocami",
         user: { connect: { id: "iuasghuii1" } }
     },
     {
-        date: new Date("2025-11-22"),
+        date: "2025-11-22",
         type: "BREAKFAST",
-        meal: { connect: { id: 4 } },
+        meal: "Makaron aglio e olio",
         user: { connect: { id: "iuasghuii1" } }
     },
         {
-        date: new Date("2025-11-10"),
+        date: "2025-11-10",
         type: "LUNCH",
-        meal: { connect: { id: 3 } },
+        meal: "Kurczak curry z ryżem",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-12"),
-        type: "BREAKFAST",
-        meal: { connect: { id: 6 } },
+        date: "2025-11-12",
+        type: "DESSERT",
+        meal: "Smoothie tropikalne",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-13"),
+        date: "2025-11-13",
         type: "DINNER",
-        meal: { connect: { id: 8 } },
+        meal: "Spaghetti bolognese",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-14"),
+        date: "2025-11-14",
         type: "LUNCH",
-        meal: { connect: { id: 2 } },
+        meal: "Sałatka grecka",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-15"),
+        date: "2025-11-15",
         type: "BREAKFAST",
-        meal: { connect: { id: 7 } },
+        meal: "Omlet warzywny",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-16"),
+        date: "2025-11-16",
         type: "DINNER",
-        meal: { connect: { id: 9 } },
+        meal: "Chili con carne",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-17"),
+        date: "2025-11-17",
         type: "BREAKFAST",
-        meal: { connect: { id: 1 } },
+        meal: "Owsianka z owocami",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-20"),
+        date: "2025-11-20",
         type: "DINNER",
-        meal: { connect: { id: 4 } },
+        meal: "Makaron aglio e olio",
         user: { connect: { id: "hjsaj1" } }
     },
     {
-        date: new Date("2025-11-22"),
+        date: "2025-11-22",
         type: "BREAKFAST",
-        meal: { connect: { id: 10 } },
+        meal: "Placuszki bananowe",
         user: { connect: { id: "hjsaj1" } }
     }
 ]
 
 export async function main() {
-    //await prisma.meal.deleteMany()
-    //await prisma.tag.deleteMany()
+    // Seed tags
+    await prisma.tag.createMany({ data: tagsData, skipDuplicates: true })
+
+    // Seed meals
+    const tagNames = tagsData.map(t => t.name)
+    const tagRecords = await prisma.tag.findMany({ where: { name: { in: tagNames } } })
+    const tagMap = new Map(tagRecords.map(t => [t.name, t.id]))
 
     for (const meal of mealsData) {
-        await prisma.meal.create({ data: meal })
-    }
+        const connect = meal.tags
+            .map(tagName => tagMap.get(tagName))
+            .filter((id): id is number => typeof id === "number")
+            .map(id => ({ id }))
 
-    for (const tag of tagsData) {
-        await prisma.tag.create({ data: tag })
+        await prisma.meal.create({ data: {
+            name: meal.name,
+            ingredients: meal.ingredients,
+            description: meal.description,
+            tags: {
+                connect
+            }
+        } })
     }
     
+    // Seed users
     for (const user of userData) {
         const hashedPassword = await bcrypt.hash(user.password, 12);
 
         await prisma.user.create({ 
             data: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            password: hashedPassword // do bazy zapisujemy hash
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                password: hashedPassword
             }
         })
     }
     
+    // Seed mealPlans
+    const mealNames = mealsData.map(t => t.name)
+    const mealRecords = await prisma.meal.findMany({ where: { name: { in: mealNames } } })
+    const mealMap = new Map(mealRecords.map(t => [t.name, t.id]))
+
     for (const plan of mealPlanData) {
-        await prisma.mealPlan.create({ data: plan })
+        const connect = { id: mealMap.get(plan.meal) }
+
+        await prisma.mealPlan.create({ data: {
+            date: new Date(plan.date),
+            type: plan.type,
+            user: plan.user,
+            meal: {
+                connect
+            }
+        } })
     }
 }
 

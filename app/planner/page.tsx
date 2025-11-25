@@ -12,8 +12,6 @@ const PlannerPage = async () => {
     include: { meal: true }
   }) : [];
 
-  console.log("MEALS IN PLANNER PAGE:", meals);
-
 
   return (
 
