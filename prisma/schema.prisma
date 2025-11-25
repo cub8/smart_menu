@@ -23,6 +23,16 @@ enum MealType {
   DINNER
 }
 
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model Tag {
   id              Int              @id @default(autoincrement())
   name            String
@@ -50,9 +60,10 @@ model MealPlan {
 }
 
 model UserPreference {
-  userId String
-  tagId  Int
+  userId    String
+  dayOfWeek DayOfWeek @default(MONDAY)
+  tagId     Int
   user User @relation(fields: [userId], references: [id])
   tag  Tag  @relation(fields: [tagId], references: [id])
-  @@id([userId, tagId])
+  @@id([userId, dayOfWeek, tagId])
 }
