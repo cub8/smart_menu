@@ -7,6 +7,7 @@ const MealCard = ({ meal, type }: { meal: Meal; type: MealType }) => {
     BREAKFAST: "Śniadanie ☕🥐",
     LUNCH: "Obiad 🍝🍲",
     DINNER: "Kolacja 🍵🍛",
+    DESSERT: "Deser 🍰🍦",
   };
 
   return (

@@ -2,11 +2,11 @@ import prisma from "@/lib/prisma"
 import Link from "next/link"
 
 export default async function MealsPage() {
-  const meals = await prisma.meal.findMany({ orderBy: { id: "asc" } })
+  const meals = await prisma.meal.findMany({ orderBy: { id: "asc" }, include: { tags: true } })
 
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-purple-600/20 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-linear-to-b from-purple-600/20 to-transparent" />
 
       <div className="mx-auto max-w-6xl px-6 py-10">
         <div className="mb-8 flex items-center justify-between">
@@ -44,10 +44,10 @@ export default async function MealsPage() {
                     <div className="mb-4 flex flex-wrap gap-2">
                       {meal.tags.map((tag) => (
                         <span
-                          key={tag}
+                          key={tag.name}
                           className="text-[10px] uppercase tracking-wide bg-purple-900/40 text-purple-300 px-2 py-1 rounded-full border border-purple-800/50"
                         >
-                          {tag}
+                          {tag.name}
                         </span>
                       ))}
                     </div>
