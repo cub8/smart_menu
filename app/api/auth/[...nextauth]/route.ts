@@ -13,9 +13,15 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
+
         const user = await validateUser(credentials.email, credentials.password);
+
         return user
-          ? { id: user.id, name: user.name ?? user.email, email: user.email }
+          ? {
+              id: user.id,
+              name: user.name ?? user.email,
+              email: user.email,
+            }
           : null;
       },
     }),
@@ -26,14 +32,13 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.userId = user.id; 
+        token.userId = (user as any).id;
       }
       return token;
     },
-
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.userId;
+      if (session.user && token.userId) {
+        (session.user as any).id = token.userId;
       }
       return session;
     },
