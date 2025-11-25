@@ -1,5 +1,7 @@
 "use client";
 
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 type Tag = {
@@ -61,7 +63,37 @@ function formatDate(d: Date): string {
   });
 }
 
-export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesModalProps) {
+async function submitForm(selectedByDay: Record<string, Set<number>>, weekStart: Date, router: AppRouterInstance, onClose: () => void) {
+  const formData: Record<string, Array<number>> = {}
+  const currentDate = new Date(weekStart.getTime()) 
+
+  DAYS.forEach((day) => {
+    const tagIds = Array.from(selectedByDay[day])
+    const dateKey = currentDate.toLocaleDateString()
+
+    formData[dateKey] = tagIds
+
+    currentDate.setDate(currentDate.getDate() + 1);
+  })
+
+  const res = await fetch("/api/meal-plan-generator", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+  });
+
+  if (!res.ok) {
+    console.error("POST /api/meal-plan-generator nieudany", await res.text());
+  }
+
+  const weekStartParam = weekStart.toLocaleDateString()
+  router.push(`/planner?weekStart=${weekStartParam}`)
+
+  onClose()
+}
+
+export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesModalProps) {  
+  const router = useRouter()
   const [loading, setLoading] = useState(true);
   const [tags, setTags] = useState<Tag[]>([]);
   const [templatesByDay, setTemplatesByDay] = useState<Record<string, number[]>>(
@@ -109,16 +141,18 @@ export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesMod
 
         const initialSelected: Record<string, Set<number>> = {};
         const initialUse: Record<string, boolean> = {};
+
         for (const day of DAYS) {
           initialUse[day] = true;
           initialSelected[day] = new Set(initialTemplates[day]);
         }
+
         setSelectedByDay(initialSelected);
         setUseTemplateByDay(initialUse);
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (!cancelled) {
           setError(
-            e?.message ||
+            (e as Error | null)?.message ||
               "Wystąpił błąd podczas ładowania preferencji z profilu."
           );
         }
@@ -239,8 +273,8 @@ export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesMod
 
           <button
             type="button"
-            disabled
-            className="rounded-xl border border-purple-400 bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700 opacity-70"
+            className="rounded-xl bg-purple-700 text-white hover:bg-purple-800 hover:text-gray-200 px-3 py-1 text-md font-medium cursor-pointer"
+            onClick={() => submitForm(selectedByDay, weekStart, router, onClose)}
           >
             Generuj
           </button>
@@ -294,7 +328,7 @@ export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesMod
                             <button
                               type="button"
                               onClick={() => removeTag(day, tagId)}
-                              className="ml-2 text-[10px] text-red-500 hover:text-red-700"
+                              className="ml-2 text-[10px] text-red-500 hover:text-red-700 cursor-pointer"
                             >
                               Usuń
                             </button>
@@ -314,7 +348,7 @@ export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesMod
                                 key={tag.id}
                                 type="button"
                                 onClick={() => toggleTag(day, tag.id)}
-                                className={`flex w-full items-center justify-between rounded px-2 py-1 text-[11px] text-left transition ${
+                                className={`flex w-full items-center justify-between rounded px-2 py-1 text-[11px] text-left transition cursor-pointer ${
                                   isSelected
                                     ? "bg-purple-600 text-white"
                                     : "bg-purple-50 hover:bg-purple-100 text-purple-900"

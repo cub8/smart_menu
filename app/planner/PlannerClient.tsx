@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import {  useState } from "react";
 import MealCalendar from "../components/MealCalendar";
 import WeeklyPreferencesModal from "../components/GenerateMeals";
 import type { MealPlan, Meal } from "../generated/prisma/client";
@@ -21,7 +21,7 @@ export default function PlannerClient({ meals }: PlannerClientProps) {
         <button
           type="button"
           onClick={() => setShowWeeklyForm(true)}
-          className="rounded-xl border border-purple-500 bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-purple-700"
+          className="rounded-xl border border-purple-500 bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-purple-700 cursor-pointer"
         >
           Generuj plan posiłków
         </button>
