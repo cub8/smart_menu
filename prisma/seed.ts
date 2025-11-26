@@ -9,7 +9,9 @@ const tagsData: Prisma.TagCreateInput[] = [
     { name: "Owoce" },
     { name: "Mięso" },
     { name: "Deser" },
-    { name: "Śniadanie" }
+    { name: "Śniadanie" },
+    { name: "Obiad" },
+    { name: "Kolacja" },
 ]
 
 type SeedMeal = {

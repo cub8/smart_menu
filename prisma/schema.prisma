@@ -65,7 +65,8 @@ model UserPreference {
   userId    String
   dayOfWeek DayOfWeek @default(MONDAY)
   tagId     Int
-  user User @relation(fields: [userId], references: [id])
-  tag  Tag  @relation(fields: [tagId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+  tag       Tag       @relation(fields: [tagId], references: [id])
+
   @@id([userId, dayOfWeek, tagId])
 }

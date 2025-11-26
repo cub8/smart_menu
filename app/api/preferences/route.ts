@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
-import { Prisma, DayOfWeek } from "@/app/generated/prisma/client";
+import { Prisma } from "@/app/generated/prisma/client"
 
 const DAYS: Array<"MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY"> = [
   "MONDAY",

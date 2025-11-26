@@ -2,7 +2,7 @@ import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import PlannerClient from "./PlannerClient";
 
-const PlannerPage = async () => {
+export default async function PlannerPage() {
   const session = await getSession();
 
   const meals = session?.user
@@ -14,6 +14,4 @@ const PlannerPage = async () => {
     : [];
 
   return <PlannerClient meals={meals} />;
-};
-
-export default PlannerPage;
+}

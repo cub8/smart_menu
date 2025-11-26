@@ -24,9 +24,9 @@ export default function RootLayout({
         <Providers>
           <header className="sticky top-0 z-50 w-full border-b border-violet-300 bg-[#EDE4FF]">
             <div className="w-full h-14 px-4 flex items-center justify-between">
-              <span className="font-semibold tracking-tight text-violet-700">
+              <Link href="/" className="font-semibold tracking-tight text-violet-700">
                 SmartMenu
-              </span>
+              </Link>
 
               <div className="flex items-center gap-3">
                 <Link
