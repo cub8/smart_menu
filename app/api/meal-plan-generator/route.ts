@@ -60,9 +60,11 @@ export async function POST(request: NextRequest) {
     if (meals.length == 0) continue
 
     const bestMeal = await findBestMeal(meals, tagIds)
+    const timestamp = Date.parse(date)
+    const parsedDate = new Date(timestamp)
 
     const mealPlan = {
-      date: new Date(date),
+      date: parsedDate,
       type: MealType.DINNER,
       mealId: bestMeal.id,
       userId: session.user.id
