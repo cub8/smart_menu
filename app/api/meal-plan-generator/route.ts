@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
 
     const mealPlan = {
       date: parsedDate,
-      type: MealType.DINNER,
+      type: MealType.LUNCH,
       mealId: bestMeal.id,
       userId: session.user.id
     }
