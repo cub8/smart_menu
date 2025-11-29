@@ -69,7 +69,7 @@ async function submitForm(selectedByDay: Record<string, Set<number>>, weekStart:
 
   DAYS.forEach((day) => {
     const tagIds = Array.from(selectedByDay[day])
-    const dateKey = currentDate.toLocaleDateString()
+    const dateKey = currentDate.toISOString().split('T')[0]
 
     formData[dateKey] = tagIds
 
