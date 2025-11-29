@@ -1,88 +1,97 @@
 import { PrismaClient, Prisma } from "@/app/generated/prisma/client"
 import bcrypt from "bcrypt";
+import { MealType } from "@/app/generated/prisma/enums";
 
 const prisma = new PrismaClient()
 
 const tagsData: Prisma.TagCreateInput[] = [
-    { name: "Nabiał" },
-    { name: "Wegetariańskie" },
-    { name: "Owoce" },
-    { name: "Mięso" },
-    { name: "Deser" },
-    { name: "Śniadanie" },
-    { name: "Obiad" },
-    { name: "Kolacja" },
-]
+  { name: "Nabiał" },
+  { name: "Wegetariańskie" },
+  { name: "Owoce" },
+  { name: "Mięso" },
+];
 
 type SeedMeal = {
-    name: string
-    tags: string[]
-    ingredients: string[]
-    description: string
-}
+  name: string;
+  tags: string[];
+  ingredients: string[];
+  description: string;
+  suggestedMealType: MealType[];
+};
 
 const mealsData: SeedMeal[] = [
-    {
-        name: "Owsianka z owocami",
-        tags: ["Wegetariańskie", "Nabiał", "Śniadanie"],
-        ingredients: ["Płatki owsiane", "Jogurt naturalny", "Banany", "Truskawki"],
-        description: "Kremowa owsianka na jogurcie z sezonowymi owocami."
-    },
-    {
-        name: "Sałatka grecka",
-        tags: ["Wegetariańskie"],
-        ingredients: ["Sałata", "Pomidor", "Ogórek", "Ser feta", "Oliwki", "Oliwa"],
-        description: "Klasyczna sałatka z fetą i oliwkami."
-    },
-    {
-        name: "Kurczak curry z ryżem",
-        tags: ["Mięso"],
-        ingredients: ["Pierś z kurczaka", "Mleko kokosowe", "Pasta curry", "Ryż basmati"],
-        description: "Aromatyczne curry na mleku kokosowym podawane z ryżem."
-    },
-    {
-        name: "Makaron aglio e olio",
-        tags: ["Wegetariańskie"],
-        ingredients: ["Spaghetti", "Czosnek", "Oliwa", "Papryczka chilli", "Pietruszka"],
-        description: "Szybki makaron z czosnkiem, oliwą i chilli."
-    },
-    {
-        name: "Jabłecznik domowy",
-        tags: ["Deser", "Owoce"],
-        ingredients: ["Jabłka", "Mąka", "Masło", "Cukier", "Cynamon"],
-        description: "Klasyczne ciasto z dużą ilością jabłek i cynamonu."
-    },
-        {
-        name: "Smoothie tropikalne",
-        tags: ["Wegetariańskie", "Owoce", "Śniadanie"],
-        ingredients: ["Mango", "Ananas", "Banan", "Jogurt naturalny"],
-        description: "Orzeźwiające smoothie z tropikalnych owoców."
-    },
-    {
-        name: "Omlet warzywny",
-        tags: ["Wegetariańskie", "Śniadanie"],
-        ingredients: ["Jajka", "Papryka", "Szpinak", "Cebula", "Ser żółty"],
-        description: "Puszysty omlet z warzywami i serem."
-    },
-    {
-        name: "Spaghetti bolognese",
-        tags: ["Mięso"],
-        ingredients: ["Makaron spaghetti", "Mięso mielone", "Pomidory", "Cebula", "Czosnek"],
-        description: "Klasyczne włoskie danie z sosem mięsnym."
-    },
-    {
-        name: "Chili con carne",
-        tags: ["Mięso"],
-        ingredients: ["Mięso mielone", "Fasola czerwona", "Pomidory", "Papryka", "Przyprawy"],
-        description: "Ostre danie meksykańskie z mięsem i fasolą."
-    },
-    {
-        name: "Placuszki bananowe",
-        tags: ["Wegetariańskie", "Deser", "Śniadanie", "Owoce"],
-        ingredients: ["Banany", "Mąka", "Jajka", "Mleko", "Cynamon"],
-        description: "Słodkie i puszyste placuszki bananowe."
-    },
-]
+  {
+    name: "Owsianka z owocami",
+    tags: ["Wegetariańskie", "Nabiał"],
+    ingredients: ["Płatki owsiane", "Jogurt naturalny", "Banany", "Truskawki"],
+    description: "Kremowa owsianka na jogurcie z sezonowymi owocami.",
+    suggestedMealType: [MealType.BREAKFAST],
+  },
+  {
+    name: "Sałatka grecka",
+    tags: ["Wegetariańskie"],
+    ingredients: ["Sałata", "Pomidor", "Ogórek", "Ser feta", "Oliwki", "Oliwa"],
+    description: "Klasyczna sałatka z fetą i oliwkami.",
+    suggestedMealType: [MealType.LUNCH, MealType.DINNER],
+  },
+  {
+    name: "Kurczak curry z ryżem",
+    tags: ["Mięso"],
+    ingredients: ["Pierś z kurczaka", "Mleko kokosowe", "Pasta curry", "Ryż basmati"],
+    description: "Aromatyczne curry na mleku kokosowym podawane z ryżem.",
+    suggestedMealType: [MealType.LUNCH, MealType.DINNER],
+  },
+  {
+    name: "Makaron aglio e olio",
+    tags: ["Wegetariańskie"],
+    ingredients: ["Spaghetti", "Czosnek", "Oliwa", "Papryczka chilli", "Pietruszka"],
+    description: "Szybki makaron z czosnkiem, oliwą i chilli.",
+    suggestedMealType: [MealType.LUNCH, MealType.DINNER],
+  },
+  {
+    name: "Jabłecznik domowy",
+    tags: ["Owoce"],
+    ingredients: ["Jabłka", "Mąka", "Masło", "Cukier", "Cynamon"],
+    description: "Klasyczne ciasto z dużą ilością jabłek i cynamonu.",
+    suggestedMealType: [MealType.DESSERT],
+  },
+  {
+    name: "Smoothie tropikalne",
+    tags: ["Wegetariańskie", "Owoce"],
+    ingredients: ["Mango", "Ananas", "Banan", "Jogurt naturalny"],
+    description: "Orzeźwiające smoothie z tropikalnych owoców.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DESSERT],
+  },
+  {
+    name: "Omlet warzywny",
+    tags: ["Wegetariańskie"],
+    ingredients: ["Jajka", "Papryka", "Szpinak", "Cebula", "Ser żółty"],
+    description: "Puszysty omlet z warzywami i serem.",
+    suggestedMealType: [MealType.BREAKFAST],
+  },
+  {
+    name: "Spaghetti bolognese",
+    tags: ["Mięso"],
+    ingredients: ["Makaron spaghetti", "Mięso mielone", "Pomidory", "Cebula", "Czosnek"],
+    description: "Klasyczne włoskie danie z sosem mięsnym.",
+    suggestedMealType: [MealType.LUNCH, MealType.DINNER],
+  },
+  {
+    name: "Chili con carne",
+    tags: ["Mięso"],
+    ingredients: ["Mięso mielone", "Fasola czerwona", "Pomidory", "Papryka", "Przyprawy"],
+    description: "Ostre danie meksykańskie z mięsem i fasolą.",
+    suggestedMealType: [MealType.LUNCH, MealType.DINNER],
+  },
+  {
+    name: "Placuszki bananowe",
+    tags: ["Wegetariańskie", "Owoce"],
+    ingredients: ["Banany", "Mąka", "Jajka", "Mleko", "Cynamon"],
+    description: "Słodkie i puszyste placuszki bananowe.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DESSERT],
+  },
+];
+
 
 const userData: Prisma.UserCreateInput[] = [
     { id: "iuasghuii1",
@@ -251,6 +260,7 @@ export async function main() {
             name: meal.name,
             ingredients: meal.ingredients,
             description: meal.description,
+            suggestedMealType: meal.suggestedMealType,
             tags: {
                 connect
             }
