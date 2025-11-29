@@ -6,6 +6,7 @@ import { useState } from "react";
 import useWeeklyPreferences from "../useWeeklyPreferences";
 import type { Day } from "../types";
 import MealTagsForm from "./MealTagsForm";
+import MealButtons from "./MealsButtons";
 
 interface MealsPanelProps {
   selectedDay: Day | null;
@@ -18,6 +19,8 @@ export default function MealsPanel({ selectedDay,}: MealsPanelProps) {
     selectedByDay,
     toggleTag,
     removeTag,
+    useTemplateByDay,
+    handleToggleTemplate,
   } = useWeeklyPreferences(() => {});
 
   const [openMeal, setOpenMeal] = useState<string | null>(null);
@@ -34,27 +37,19 @@ export default function MealsPanel({ selectedDay,}: MealsPanelProps) {
   }
 
   const meals = ["Śniadanie", "Obiad", "Kolacja", "Deser"];
+  const usesTemplate = useTemplateByDay[selectedDay] ?? false;
 
   return (
     <div className="flex flex-col flex-1 p-4 gap-4">
       {/* przyciski posilkow */}
-      <div className="flex gap-3">
-        {meals.map((meal) => (
-          <button
-            key={meal}
-            onClick={() =>
-              setOpenMeal(openMeal === meal ? null : meal)
-            }
-            className={`px-4 py-2 rounded-3xl text-white ${
-              openMeal === meal
-                ? "bg-purple-600"
-                : "bg-purple-200 text-purple-900 hover:bg-purple-100"
-            }`}
-          >
-            {meal}
-          </button>
-        ))}
-      </div>
+      <MealButtons
+        meals={meals}
+        openMeal={openMeal}
+        setOpenMeal={setOpenMeal}
+        usesTemplate={usesTemplate}
+        selectedDay={selectedDay}
+        handleToggleTemplate={handleToggleTemplate}
+      />
 
       {/* formularz tagow dla wybranego posilku */}
       {openMeal && (

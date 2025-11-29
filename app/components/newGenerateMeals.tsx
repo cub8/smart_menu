@@ -15,16 +15,9 @@ export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesMod
   const {
     loading,
     error,
-    tags,
-    selectedByDay,
-    useTemplateByDay,
     weekLabel,
-    weekStart,
-    toggleTag,
-    removeTag,
     handlePrevWeek,
     handleNextWeek,
-    handleToggleTemplate,
     handleSubmit,
   } = useWeeklyPreferences(onClose);
 
@@ -73,16 +66,11 @@ return (
 
       </div>
 
-    {/* GLOWNY WIDOK */}
+    {/* Glowny widok - wybor dni i panel posilkow */}
     <div className="flex">
 
-      {/* Wybor dni */}
       <SidebarDays selectedDay={selectedDay} onSelectDay={setSelectedDay} />
-
-      {/* Panel posilkow po prawo */}
-      <MealsPanel
-        selectedDay={selectedDay}
-      />
+      <MealsPanel selectedDay={selectedDay} />
         
     </div>    
 
