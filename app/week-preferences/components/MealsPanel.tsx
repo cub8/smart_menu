@@ -3,7 +3,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Day, Tag } from "../types";
+import { Day, Tag, MEALS, MealType} from "../types";
 import MealTagsForm from "./MealTagsForm";
 import MealButtons from "./MealsButtons";
 import LoadingError from "./LoadingError";
@@ -13,9 +13,9 @@ interface MealsPanelProps {
   error: string | null;
   selectedDay: Day | null;
   tags: Tag[];
-  selectedByDay: Record<Day, Set<number>>;
-  toggleTag: (day: Day, id: number) => void;
-  removeTag: (day: Day, id: number) => void;
+  selectedByMeal: Record<Day, Record<MealType, Set<number>>>;
+  toggleTag: (day: Day, meal: MealType, id: number) => void;
+  removeTag: (day: Day, meal: MealType, id: number) => void;
   useTemplateByDay: Record<Day, boolean>;
   handleToggleTemplate: (day: Day) => void;
 }
@@ -25,14 +25,14 @@ export default function MealsPanel({
   error,
   selectedDay,
   tags,
-  selectedByDay,
+  selectedByMeal,
   toggleTag,
   removeTag,
   useTemplateByDay,
   handleToggleTemplate,
 }: MealsPanelProps) {
 
-  const [openMeal, setOpenMeal] = useState<string | null>(null);
+  const [openMeal, setOpenMeal] = useState<MealType | null>(null);
 
 
   if (!selectedDay) {
@@ -45,7 +45,6 @@ export default function MealsPanel({
     );
   }
 
-  const meals = ["Śniadanie", "Obiad", "Kolacja", "Deser"];
   const usesTemplate = useTemplateByDay[selectedDay] ?? false;
 
   return (
@@ -56,7 +55,7 @@ export default function MealsPanel({
 
       {/* przyciski posilkow */}
       <MealButtons
-        meals={meals}
+        meals={MEALS}
         openMeal={openMeal}
         setOpenMeal={setOpenMeal}
         usesTemplate={usesTemplate}
@@ -68,8 +67,9 @@ export default function MealsPanel({
       {openMeal && (
         <MealTagsForm
           day={selectedDay}
+          meal={openMeal}
           tags={tags}
-          selectedTags={selectedByDay[selectedDay] || new Set()}
+          selectedTags={selectedByMeal[selectedDay]?.[openMeal] ?? new Set()}
           toggleTag={toggleTag}
           removeTag={removeTag}
         />

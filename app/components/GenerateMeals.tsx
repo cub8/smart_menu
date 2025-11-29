@@ -18,7 +18,7 @@ export default function GenerateMeals({ onClose }: GenerateMealsProps) {
     loading,
     error,
     tags,
-    selectedByDay,
+    selectedByMeal,
     useTemplateByDay,
     weekLabel,
     handlePrevWeek,
@@ -57,7 +57,7 @@ return (
           error={error} 
           selectedDay={selectedDay} 
           tags={tags}
-          selectedByDay={selectedByDay}
+          selectedByMeal={selectedByMeal}
           toggleTag={toggleTag}
           removeTag={removeTag}
           useTemplateByDay={useTemplateByDay}

@@ -2,18 +2,20 @@
 
 "use client";
 
-import type { Day, Tag } from "../types";
+import type { Day, MealType, Tag } from "../types";
 
 interface MealTagsFormProps {
   day: Day;
+  meal: MealType;
   tags: Tag[];
   selectedTags: Set<number>;
-  toggleTag: (day: Day, tagId: number) => void;
-  removeTag: (day: Day, tagId: number) => void;
+  toggleTag: (day: Day, meal: MealType, tagId: number) => void;
+  removeTag: (day: Day, meal: MealType, tagId: number) => void;
 }
 
 export default function MealTagsForm({
   day,
+  meal,
   tags,
   selectedTags,
   toggleTag,
@@ -34,7 +36,7 @@ export default function MealTagsForm({
             <span className="text-purple-900">{tag.name}</span>
             <button
               type="button"
-              onClick={() => removeTag(day, tagId)}
+              onClick={() => removeTag(day, meal, tagId)}
               className="ml-2 text-[10px] text-red-500 hover:text-red-700 cursor-pointer"
             >
               Usuń
@@ -55,7 +57,7 @@ export default function MealTagsForm({
               <button
                 key={tag.id}
                 type="button"
-                onClick={() => toggleTag(day, tag.id)}
+                onClick={() => toggleTag(day, meal, tag.id)}
                 className={`flex w-full items-center justify-between rounded px-2 py-1 text-[11px] text-left transition cursor-pointer ${
                   isSelected
                     ? "bg-purple-600 text-white"

@@ -1,20 +1,30 @@
 // zapis formularza
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { DAYS } from "../week-preferences/types";
+import { DAYS, type Day, type MealType } from "../week-preferences/types";
 
 
-export async function submitForm(selectedByDay: Record<string, Set<number>>, weekStart: Date, router: AppRouterInstance, onClose: () => void) {
-  const formData: Record<string, Array<number>> = {}
+export async function submitForm(
+  selectedByMeal: Record<Day, Record<MealType, Set<number>>>, 
+  weekStart: Date, 
+  router: AppRouterInstance, 
+  onClose: () => void
+) {
+  const formData: Record<string, Record<MealType, number[]>> = {};
   const currentDate = new Date(weekStart.getTime()) 
 
   DAYS.forEach((day) => {
-    const tagIds = Array.from(selectedByDay[day])
-    const dateKey = currentDate.toISOString().split('T')[0]
+    const mealTags = selectedByMeal[day] ?? {};
+    const tagIdsByMeal: Record<MealType, number[]> = {} as Record<MealType, number[]>;
 
-    formData[dateKey] = tagIds
+    for (const meal in mealTags) {
+      tagIdsByMeal[meal as MealType] = Array.from(mealTags[meal as MealType]);
+    }
+
+    const dateKey = currentDate.toISOString().split("T")[0];
+    formData[dateKey] = tagIdsByMeal;
 
     currentDate.setDate(currentDate.getDate() + 1);
-  })
+  });
 
   const res = await fetch("/api/meal-plan-generator", {
     method: "POST",

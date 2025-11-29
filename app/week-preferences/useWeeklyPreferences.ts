@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { addDays, formatDate, getMonday } from "../week-preferences/date";
-import { DAYS, Tag } from "../week-preferences/types";
+import { MEALS, type MealType, DAYS, Day, Tag } from "../week-preferences/types";
 import { submitForm } from "./services";
 
 
@@ -14,7 +14,20 @@ export default function useWeeklyPreferences( onClose: () => void ) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [templatesByDay, setTemplatesByDay] = useState<Record<string, number[]>>( () => ({}));
   const [weekStart, setWeekStart] = useState<Date>(() => getMonday(new Date()));
-  const [selectedByDay, setSelectedByDay] = useState<Record<string, Set<number>>>( () => ({}) );
+  
+  const [selectedByMeal, setSelectedByMeal] = useState<
+    Record<string, Record<MealType, Set<number>>>
+  >(() => {
+    const initial: Record<string, Record<MealType, Set<number>>> = {};
+    for (const day of DAYS) {
+      initial[day] = {} as Record<MealType, Set<number>>;
+      for (const meal of MEALS) {
+        initial[day][meal] = new Set<number>();
+      }
+    }
+    return initial;
+  });
+
   const [useTemplateByDay, setUseTemplateByDay] = useState<Record<string, boolean>>( () => ({}));
   const [error, setError] = useState<string | null>(null);
 
@@ -48,15 +61,20 @@ export default function useWeeklyPreferences( onClose: () => void ) {
         }
         setTemplatesByDay(initialTemplates);
 
-        const initialSelected: Record<string, Set<number>> = {};
+        const initialSelected: Record<string, Record<MealType, Set<number>>> = {};
         const initialUse: Record<string, boolean> = {};
 
         for (const day of DAYS) {
           initialUse[day] = true;
-          initialSelected[day] = new Set(initialTemplates[day]);
+
+          initialSelected[day] = {} as Record<MealType, Set<number>>;
+          for (const meal of MEALS) {
+            // kopiujemy szablon dnia do każdego posiłku
+            initialSelected[day][meal] = new Set(initialTemplates[day] ?? []);
+          }
         }
 
-        setSelectedByDay(initialSelected);
+        setSelectedByMeal(initialSelected);
         setUseTemplateByDay(initialUse);
       } catch (e: unknown) {
         if (!cancelled) {
@@ -81,22 +99,23 @@ export default function useWeeklyPreferences( onClose: () => void ) {
 
 
 
-  function handleToggleTemplate(day: (typeof DAYS)[number]) {
+  function handleToggleTemplate(day: Day) {
     setUseTemplateByDay((prev) => {
       const next = { ...prev };
       const willUse = !next[day];
       next[day] = willUse;
 
-      setSelectedByDay((prevSelected) => {
-        const copy: Record<string, Set<number>> = {};
-        for (const d of DAYS) {
-          copy[d] = new Set(prevSelected[d] ?? []);
+      setSelectedByMeal((prevSelected) => {
+        const copy = { ...prevSelected } as Record<Day, Record<MealType, Set<number>>>;
+
+        if (!copy[day]) {
+          copy[day] = {} as Record<MealType, Set<number>>;
         }
 
-        if (willUse) {
-          copy[day] = new Set(templatesByDay[day] ?? []);
-        } else {
-          copy[day] = new Set();
+        for (const meal of MEALS) {
+          copy[day][meal] = willUse
+            ? new Set(templatesByDay[day] ?? [])
+            : new Set();
         }
 
         return copy;
@@ -107,36 +126,36 @@ export default function useWeeklyPreferences( onClose: () => void ) {
   }
 
 
-  function toggleTag(day: (typeof DAYS)[number], id: number) {
-    setSelectedByDay((prev) => {
-      const next: Record<string, Set<number>> = {};
-      for (const d of DAYS) {
-        next[d] = new Set(prev[d] ?? []);
-      }
+  function toggleTag(day: Day, meal: MealType, id: number) {
+    setSelectedByMeal((prev) => {
+        const next = { ...prev };
 
-      const daySet = next[day] ?? new Set<number>();
-      if (daySet.has(id)) {
-        daySet.delete(id);
-      } else {
-        daySet.add(id);
-      }
-      next[day] = daySet;
+        next[day] = { ...(prev[day] ?? {}) };
 
-      return next;
+      
+        const mealSet = new Set(next[day][meal] ?? []);
+        if (mealSet.has(id)) mealSet.delete(id);
+        else mealSet.add(id);
+
+        next[day][meal] = mealSet;
+
+        return next;
     });
   }
 
-  function removeTag(day: (typeof DAYS)[number], id: number) {
-    setSelectedByDay((prev) => {
-      const next: Record<string, Set<number>> = {};
-      for (const d of DAYS) {
-        next[d] = new Set(prev[d] ?? []);
-      }
-      const daySet = next[day] ?? new Set<number>();
-      daySet.delete(id);
-      next[day] = daySet;
-      return next;
-    });
+  function removeTag(day: Day, meal: MealType, id: number) {
+    setSelectedByMeal((prev) => {
+        if (!prev[day]?.[meal]) return prev;
+
+        const next = { ...prev };
+        next[day] = { ...(prev[day] ?? {}) };
+
+        const mealSet = new Set(next[day][meal]);
+        mealSet.delete(id);
+
+        next[day][meal] = mealSet;
+        return next;
+      });
   }
 
   function handlePrevWeek() { setWeekStart((prev) => addDays(prev, -7));}
@@ -149,7 +168,7 @@ export default function useWeeklyPreferences( onClose: () => void ) {
   }, [weekStart])
 
   function handleSubmit() {
-    submitForm(selectedByDay, weekStart, router, onClose)
+    submitForm(selectedByMeal, weekStart, router, onClose)
   }
 
 
@@ -157,7 +176,7 @@ export default function useWeeklyPreferences( onClose: () => void ) {
     loading,
     error,
     tags,
-    selectedByDay,
+    selectedByMeal,
     useTemplateByDay,
     templatesByDay,
     weekLabel,
@@ -167,7 +186,7 @@ export default function useWeeklyPreferences( onClose: () => void ) {
     handlePrevWeek,
     handleNextWeek,
     handleToggleTemplate,
-    setSelectedByDay,
+    setSelectedByMeal,
     handleSubmit
   };
 }

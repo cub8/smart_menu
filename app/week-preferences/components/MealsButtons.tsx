@@ -1,11 +1,12 @@
 "use client";
 
-import type { Day } from "../types";
+import { MEAL_LABELS, type MealType, type Day } from "../types";
+
 
 interface MealButtonsProps {
-  meals: string[];
-  openMeal: string | null;
-  setOpenMeal: (meal: string | null) => void;
+  meals: MealType[];
+  openMeal: MealType | null;
+  setOpenMeal: (meal: MealType | null) => void;
   usesTemplate: boolean;
   selectedDay: Day;
   handleToggleTemplate: (day: Day) => void;
@@ -33,7 +34,7 @@ export default function MealButtons({
               : "bg-purple-200 text-purple-900 hover:bg-purple-100"
           }`}
         >
-          {meal}
+          {MEAL_LABELS[meal]}
         </button>
       ))}
 

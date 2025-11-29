@@ -35,9 +35,15 @@ export type Tag = {
   name: string;
 };
 
-export type MealType =
-  | "BREAKFAST"
-  | "LUNCH"
-  | "DINNER";
+export const MEAL_LABELS = {
+  BREAKFAST: "Śniadanie",
+  LUNCH: "Obiad",
+  DINNER: "Kolacja",
+  DESSERT: "Deser",
+} as const;
+
+export type MealType = keyof typeof MEAL_LABELS;
+
+export const MEALS: MealType[] = Object.keys(MEAL_LABELS) as MealType[];
 
 
