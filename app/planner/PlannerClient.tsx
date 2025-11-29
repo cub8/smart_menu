@@ -2,7 +2,7 @@
 
 import {  useState } from "react";
 import MealCalendar from "../components/MealCalendar";
-import WeeklyPreferencesModal from "../components/newGenerateMeals";
+import WeeklyPreferencesModal from "../components/GenerateMeals";
 import type { MealPlan, Meal } from "../generated/prisma/client";
 
 type MealPlanWithMeal = MealPlan & { meal: Meal };
