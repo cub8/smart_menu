@@ -3,25 +3,34 @@
 "use client";
 
 import { useState } from "react";
-import useWeeklyPreferences from "../useWeeklyPreferences";
-import type { Day } from "../types";
+import type { Day, Tag } from "../types";
 import MealTagsForm from "./MealTagsForm";
 import MealButtons from "./MealsButtons";
+import LoadingError from "./LoadingError";
 
 interface MealsPanelProps {
+  loading: boolean;
+  error: string | null;
   selectedDay: Day | null;
+  tags: Tag[];
+  selectedByDay: Record<Day, Set<number>>;
+  toggleTag: (day: Day, id: number) => void;
+  removeTag: (day: Day, id: number) => void;
+  useTemplateByDay: Record<Day, boolean>;
+  handleToggleTemplate: (day: Day) => void;
 }
 
-export default function MealsPanel({ selectedDay,}: MealsPanelProps) {
-
-  const {
-    tags,
-    selectedByDay,
-    toggleTag,
-    removeTag,
-    useTemplateByDay,
-    handleToggleTemplate,
-  } = useWeeklyPreferences(() => {});
+export default function MealsPanel({ 
+  loading,
+  error,
+  selectedDay,
+  tags,
+  selectedByDay,
+  toggleTag,
+  removeTag,
+  useTemplateByDay,
+  handleToggleTemplate,
+}: MealsPanelProps) {
 
   const [openMeal, setOpenMeal] = useState<string | null>(null);
 
@@ -41,6 +50,10 @@ export default function MealsPanel({ selectedDay,}: MealsPanelProps) {
 
   return (
     <div className="flex flex-col flex-1 p-4 gap-4">
+
+      {/* komunikaty dla uzytkownika */}
+      <LoadingError loading={loading} error={error} />
+
       {/* przyciski posilkow */}
       <MealButtons
         meals={meals}

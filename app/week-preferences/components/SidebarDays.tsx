@@ -4,7 +4,7 @@
 import { DAYS, DAY_LABELS, Day } from "../types";
 
 interface SidebarDaysProps {
-  selectedDay: string | null;
+  selectedDay: Day | null;
   onSelectDay: (day: Day) => void;
 }
 

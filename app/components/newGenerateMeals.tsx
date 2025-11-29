@@ -1,23 +1,31 @@
 // glowny plik komponentu do generowania posilkow na podstawie preferencji tygodniowych
 
 "use client";
-import MealsPanel from "../week-preferences/components/MealsPanel";
-import SidebarDays from "../week-preferences/components/SidebarDays";
-import { Day } from "../week-preferences/types";
-import useWeeklyPreferences from "../week-preferences/useWeeklyPreferences";
+import useWeeklyPreferences from "../week-preferences/useWeeklyPreferences"; //hook
 import { useState } from "react";
+import { Day } from "../week-preferences/types";
+import GenerateMealsHeader from "../week-preferences/components/GenerateMealsHeader";
+import SidebarDays from "../week-preferences/components/SidebarDays";
+import MealsPanel from "../week-preferences/components/MealsPanel";
 
 interface WeeklyPreferencesModalProps {
   onClose: () => void;
 }
 
+// pobieranie stanu z hooka i przekazywanie do komponentow
 export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesModalProps) {
   const {
     loading,
     error,
+    tags,
+    selectedByDay,
+    useTemplateByDay,
     weekLabel,
     handlePrevWeek,
     handleNextWeek,
+    handleToggleTemplate,
+    toggleTag,
+    removeTag,
     handleSubmit,
   } = useWeeklyPreferences(onClose);
 
@@ -28,53 +36,37 @@ return (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-2">
     <div className="max-w-5xl w-full rounded-2xl bg-white shadow-xl">
 
+      {/* Header z przyciskami tygodnia */}
+        <GenerateMealsHeader
+          weekLabel={weekLabel}
+          handlePrevWeek={handlePrevWeek}
+          handleNextWeek={handleNextWeek}
+          onClose={onClose}
+        />
 
-      {/* HEADER */}
-      <div className="flex items-center justify-between border-b px-5 py-3">
-        <h2 className="text-lg font-semibold text-purple-800">
-          Generuj posiłki na cały tydzień według preferencji.
-        </h2>
+      {/* Glowny widok - wybor dni i panel posilkow */}
+      <div className="flex">
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-xl border border-gray-300 px-4 py-1.5 text-m font-medium text-gray-700 hover:bg-red-400"
-        >
-          X
-        </button>
-      </div>
+        <SidebarDays
+          selectedDay={selectedDay}
+          onSelectDay={setSelectedDay}
+        />
 
-      {/* Przyciski zmiany tygodnia */}
-      <div className="flex items-center justify-between border-b bg-purple-50 px-5 py-2 text-sm">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={handlePrevWeek}
-            className="rounded-full border border-purple-200 px-2 py-1 text-xs text-purple-700 hover:bg-purple-100"
-          >
-            -1 tydzień
-          </button>
-          <span className="font-medium text-purple-900">{weekLabel}</span>
-          <button
-            type="button"
-            onClick={handleNextWeek}
-            className="rounded-full border border-purple-200 px-2 py-1 text-xs text-purple-700 hover:bg-purple-100"
-          >
-            +1 tydzień
-          </button>
-        </div>
+        <MealsPanel
+          loading={loading}
+          error={error} 
+          selectedDay={selectedDay} 
+          tags={tags}
+          selectedByDay={selectedByDay}
+          toggleTag={toggleTag}
+          removeTag={removeTag}
+          useTemplateByDay={useTemplateByDay}
+          handleToggleTemplate={handleToggleTemplate}
+        />
 
-      </div>
+      </div>    
 
-    {/* Glowny widok - wybor dni i panel posilkow */}
-    <div className="flex">
-
-      <SidebarDays selectedDay={selectedDay} onSelectDay={setSelectedDay} />
-      <MealsPanel selectedDay={selectedDay} />
-        
-    </div>    
-
-      {/* Generuj */}
+      {/* przycisk generuj */}
       <div className="flex column items-center justify-center border-t bg-gray-50 p-4">
         <button
           type="button"
