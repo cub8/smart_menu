@@ -159,6 +159,7 @@ export default function useWeeklyPreferences( onClose: () => void ) {
     tags,
     selectedByDay,
     useTemplateByDay,
+    templatesByDay,
     weekLabel,
     weekStart,
     toggleTag,

@@ -28,6 +28,8 @@ export const DAY_LABELS: Record<(typeof DAYS)[number], string> = {
   SUNDAY: "Niedziela",
 };
 
+export type Day = (typeof DAYS)[number];
+
 export type Tag = {
   id: number;
   name: string;

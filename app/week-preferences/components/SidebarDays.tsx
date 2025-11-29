@@ -1,9 +1,11 @@
+// kolumna dni po lewej stronie
+
 "use client";
-import { DAYS, DAY_LABELS } from "../types";
+import { DAYS, DAY_LABELS, Day } from "../types";
 
 interface SidebarDaysProps {
   selectedDay: string | null;
-  onSelectDay: (day: string) => void;
+  onSelectDay: (day: Day) => void;
 }
 
 export default function SidebarDays({ selectedDay, onSelectDay }: SidebarDaysProps) {

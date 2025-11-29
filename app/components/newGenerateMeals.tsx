@@ -1,8 +1,9 @@
+// glowny plik komponentu do generowania posilkow na podstawie preferencji tygodniowych
+
 "use client";
 import MealsPanel from "../week-preferences/components/MealsPanel";
 import SidebarDays from "../week-preferences/components/SidebarDays";
-import { addDays, formatDate} from "../week-preferences/date";
-import { DAY_LABELS, DAYS} from "../week-preferences/types";
+import { Day } from "../week-preferences/types";
 import useWeeklyPreferences from "../week-preferences/useWeeklyPreferences";
 import { useState } from "react";
 
@@ -28,7 +29,7 @@ export default function WeeklyPreferencesModal({ onClose }: WeeklyPreferencesMod
   } = useWeeklyPreferences(onClose);
 
 
-const [selectedDay, setSelectedDay] = useState<string | null>(null);
+const [selectedDay, setSelectedDay] = useState<Day | null>(null);
 
 return (
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-2">
@@ -79,7 +80,9 @@ return (
       <SidebarDays selectedDay={selectedDay} onSelectDay={setSelectedDay} />
 
       {/* Panel posilkow po prawo */}
-      <MealsPanel selectedDay={selectedDay} />
+      <MealsPanel
+        selectedDay={selectedDay}
+      />
         
     </div>    
 
