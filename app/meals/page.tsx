@@ -48,10 +48,9 @@ export default async function MealsPage() {
                     {meal.name}
                   </h2>
 
-                  {/* SUGEROWANY TYP POSIŁKU */}
                   {meal.suggestedMealType && meal.suggestedMealType.length > 0 && (
                     <div className="mb-3">
-                      <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-1">
+                      <p className="text-xs font-medium text-zinc-400 tracking-wide mb-1">
                         Sugerowany typ posiłku:
                       </p>
                       <div className="flex flex-wrap gap-2">
