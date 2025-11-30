@@ -12,6 +12,12 @@ const tagsData: Prisma.TagCreateInput[] = [
     { name: "Śniadanie" },
     { name: "Obiad" },
     { name: "Kolacja" },
+    { name: "Bezglutenowe" },
+    { name: "Wegańskie" },
+    { name: "Szybkie" },
+    { name: "Przekąska" },
+    { name: "Zupy" },
+    { name: "Sałatki" },
 ]
 
 type SeedMeal = {
@@ -82,6 +88,66 @@ const mealsData: SeedMeal[] = [
         ingredients: ["Banany", "Mąka", "Jajka", "Mleko", "Cynamon"],
         description: "Słodkie i puszyste placuszki bananowe."
     },
+    {
+    name: "Smoothie bowl z jagodami",
+    tags: ["Wegetariańskie", "Śniadanie", "Bezglutenowe"],
+    ingredients: ["Banany", "Jagody", "Mleko roślinne", "Płatki kokosowe"],
+    description: "Kolorowa miska smoothie z owocami i chrupiącymi dodatkami."
+    },
+    {
+        name: "Sałatka grecka",
+        tags: ["Wegetariańskie", "Sałatki", "Obiad"],
+        ingredients: ["Ogórek", "Pomidor", "Feta", "Oliwki", "Cebula"],
+        description: "Klasyczna sałatka z warzyw, sera feta i oliwek."
+    },
+    {
+        name: "Grillowana pierś z kurczaka",
+        tags: ["Mięso", "Obiad", "Szybkie"],
+        ingredients: ["Pierś z kurczaka", "Przyprawy", "Oliwa z oliwek"],
+        description: "Soczysta pierś z kurczaka z aromatycznymi przyprawami."
+    },
+    {
+        name: "Zupa krem z dyni",
+        tags: ["Wegetariańskie", "Zupy", "Obiad"],
+        ingredients: ["Dynia", "Cebula", "Bulion warzywny", "Śmietanka"],
+        description: "Gładka, kremowa zupa z dyni z delikatną nutą przypraw."
+    },
+    {
+        name: "Hummus z warzywami",
+        tags: ["Wegańskie", "Przekąska", "Bezglutenowe"],
+        ingredients: ["Ciecierzyca", "Tahini", "Oliwa", "Papryka", "Marchewka"],
+        description: "Kremowy hummus podawany z chrupiącymi warzywami."
+    },
+    {
+        name: "Naleśniki z dżemem",
+        tags: ["Wegetariańskie", "Deser", "Śniadanie"],
+        ingredients: ["Mąka", "Jajka", "Mleko", "Dżem"],
+        description: "Delikatne naleśniki z ulubionym dżemem owocowym."
+    },
+    {
+        name: "Sałatka z tuńczykiem",
+        tags: ["Mięso", "Sałatki", "Obiad"],
+        ingredients: ["Tuńczyk", "Sałata", "Pomidor", "Cebula", "Oliwa"],
+        description: "Lekka sałatka z tuńczykiem, idealna na szybki lunch."
+    },
+    {
+        name: "Kanapki z awokado",
+        tags: ["Wegańskie", "Śniadanie", "Szybkie"],
+        ingredients: ["Chleb pełnoziarnisty", "Awokado", "Pomidor", "Rukola"],
+        description: "Zdrowe i szybkie kanapki z kremowym awokado."
+    },
+    {
+        name: "Makaron z sosem pomidorowym",
+        tags: ["Wegetariańskie", "Obiad", "Szybkie"],
+        ingredients: ["Makaron", "Pomidory", "Czosnek", "Bazylia", "Oliwa"],
+        description: "Prosty makaron w aromatycznym sosie pomidorowym."
+    },
+    {
+        name: "Koktajl proteinowy",
+        tags: ["Wegetariańskie", "Śniadanie", "Szybkie"],
+        ingredients: ["Mleko", "Banan", "Białko w proszku", "Masło orzechowe"],
+        description: "Energetyczny koktajl idealny na szybkie śniadanie lub przekąskę."
+    }
 ]
 
 const userData: Prisma.UserCreateInput[] = [
