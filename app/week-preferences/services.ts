@@ -1,6 +1,7 @@
 // zapis formularza
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { DAYS, type Day, type MealType } from "../week-preferences/types";
+import { formatDateYMD } from "./date";
 
 
 export async function submitForm(
@@ -20,7 +21,7 @@ export async function submitForm(
       tagIdsByMeal[meal as MealType] = Array.from(mealTags[meal as MealType]);
     }
 
-    const dateKey = currentDate.toISOString().split("T")[0];
+    const dateKey = formatDateYMD(currentDate);
     formData[dateKey] = tagIdsByMeal;
 
     currentDate.setDate(currentDate.getDate() + 1);

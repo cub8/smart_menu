@@ -21,3 +21,7 @@ export function formatDate(d: Date): string {
     month: "2-digit",
   });
 }
+
+export function formatDateYMD(date: Date) {
+  return date.toLocaleDateString("sv-SE"); // YYYY-MM-DD 
+}
