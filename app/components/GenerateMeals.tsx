@@ -29,14 +29,11 @@ export default function GenerateMeals({ onClose }: GenerateMealsProps) {
     handleSubmit,
   } = useWeeklyPreferences(onClose);
 
+  const [selectedDay, setSelectedDay] = useState<Day | null>(null);
 
-const [selectedDay, setSelectedDay] = useState<Day | null>(null);
-
-return (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-2">
-    <div className="max-w-5xl w-full rounded-2xl bg-white shadow-xl">
-
-      {/* Header z przyciskami tygodnia */}
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-2">
+      <div className="max-w-5xl w-full rounded-2xl bg-white shadow-xl">
         <GenerateMealsHeader
           weekLabel={weekLabel}
           handlePrevWeek={handlePrevWeek}
@@ -44,41 +41,37 @@ return (
           onClose={onClose}
         />
 
-      {/* Glowny widok - wybor dni i panel posilkow */}
-      <div className="flex">
+        <div className="flex">
+          <SidebarDays
+            selectedDay={selectedDay}
+            onSelectDay={setSelectedDay}
+          />
 
-        <SidebarDays
-          selectedDay={selectedDay}
-          onSelectDay={setSelectedDay}
-        />
+          <MealsPanel
+            loading={loading}
+            error={error} 
+            selectedDay={selectedDay} 
+            tags={tags}
+            selectedByMeal={selectedByMeal}
+            toggleTag={toggleTag}
+            removeTag={removeTag}
+            useTemplateByDay={useTemplateByDay}
+            handleToggleTemplate={handleToggleTemplate}
+          />
+        </div>    
 
-        <MealsPanel
-          loading={loading}
-          error={error} 
-          selectedDay={selectedDay} 
-          tags={tags}
-          selectedByMeal={selectedByMeal}
-          toggleTag={toggleTag}
-          removeTag={removeTag}
-          useTemplateByDay={useTemplateByDay}
-          handleToggleTemplate={handleToggleTemplate}
-        />
+        <div className="flex column items-center justify-center border-t bg-gray-50 p-4">
+          <button
+            type="button"
+            className="rounded-xl bg-purple-600 text-white hover:bg-purple-800 hover:text-gray-200 px-5 py-2 text-xl font-medium cursor-pointer"
+            onClick={handleSubmit}
+          >
+            🪄 Generuj
+          </button>
+        </div>
 
-      </div>    
-
-      {/* przycisk generuj */}
-      <div className="flex column items-center justify-center border-t bg-gray-50 p-4">
-        <button
-          type="button"
-          className="rounded-xl bg-purple-600 text-white hover:bg-purple-800 hover:text-gray-200 px-5 py-2 text-xl font-medium cursor-pointer"
-          onClick={handleSubmit}
-        >
-          🪄 Generuj
-        </button>
       </div>
-
     </div>
-  </div>
-);
+  );
 
 }

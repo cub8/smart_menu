@@ -1,4 +1,5 @@
 "use client";
+
 import { Meal } from "../generated/prisma/client";
 import { MealType } from "../generated/prisma/enums";
 
