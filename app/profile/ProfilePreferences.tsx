@@ -1,31 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
-type Tag = {
-  id: number;
-  name: string;
-};
-
-const DAYS: Array<"MONDAY" | "TUESDAY" | "WEDNESDAY" | "THURSDAY" | "FRIDAY" | "SATURDAY" | "SUNDAY"> = [
-  "MONDAY",
-  "TUESDAY",
-  "WEDNESDAY",
-  "THURSDAY",
-  "FRIDAY",
-  "SATURDAY",
-  "SUNDAY",
-];
-
-const DAY_LABELS: Record<(typeof DAYS)[number], string> = {
-  MONDAY: "Poniedziałek",
-  TUESDAY: "Wtorek",
-  WEDNESDAY: "Środa",
-  THURSDAY: "Czwartek",
-  FRIDAY: "Piątek",
-  SATURDAY: "Sobota",
-  SUNDAY: "Niedziela",
-};
+import { DAYS, DAY_LABELS, Tag } from "../week-preferences/types";
 
 interface Props {
   tags: Tag[];
