@@ -1,8 +1,19 @@
-import prisma from "@/lib/prisma"
-import Link from "next/link"
+import prisma from "@/lib/prisma";
+import Link from "next/link";
+import { MealType } from "@/app/generated/prisma/enums";
+
+const mealTypeLabels: Record<MealType, string> = {
+  BREAKFAST: "Śniadanie",
+  LUNCH: "Obiad",
+  DINNER: "Kolacja",
+  DESSERT: "Deser",
+};
 
 export default async function MealsPage() {
-  const meals = await prisma.meal.findMany({ orderBy: { id: "asc" }, include: { tags: true } })
+  const meals = await prisma.meal.findMany({
+    orderBy: { id: "asc" },
+    include: { tags: true },
+  });
 
   return (
     <div className="relative">
@@ -13,7 +24,10 @@ export default async function MealsPage() {
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-zinc-100">
             Lista posiłków
           </h1>
-          <Link href="/" className="text-sm text-zinc-300 hover:text-white underline underline-offset-4">
+          <Link
+            href="/"
+            className="text-sm text-zinc-300 hover:text-white underline underline-offset-4"
+          >
             Powrót do strony głównej
           </Link>
         </div>
@@ -33,6 +47,24 @@ export default async function MealsPage() {
                   <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
                     {meal.name}
                   </h2>
+
+                  {meal.suggestedMealType && meal.suggestedMealType.length > 0 && (
+                    <div className="mb-3">
+                      <p className="text-xs font-medium text-zinc-400 tracking-wide mb-1">
+                        Sugerowany typ posiłku:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {meal.suggestedMealType.map((t) => (
+                          <span
+                            key={t}
+                            className="text-[10px] uppercase tracking-wide bg-emerald-900/40 text-emerald-200 px-2 py-1 rounded-full border border-emerald-700/60"
+                          >
+                            {mealTypeLabels[t]}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {meal.description ? (
                     <p className="text-sm text-zinc-300 mb-4 leading-relaxed">
@@ -55,7 +87,9 @@ export default async function MealsPage() {
 
                   {meal.ingredients?.length ? (
                     <div>
-                      <p className="text-sm font-medium text-zinc-200">Składniki:</p>
+                      <p className="text-sm font-medium text-zinc-200">
+                        Składniki:
+                      </p>
                       <ul className="mt-1 list-disc list-inside text-sm text-zinc-400 space-y-0.5">
                         {meal.ingredients.map((ing, idx) => (
                           <li key={idx}>{ing}</li>
@@ -70,5 +104,5 @@ export default async function MealsPage() {
         )}
       </div>
     </div>
-  )
+  );
 }

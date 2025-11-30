@@ -1,5 +1,6 @@
 import { PrismaClient, Prisma } from "@/app/generated/prisma/client"
 import bcrypt from "bcrypt";
+import { MealType } from "@/app/generated/prisma/enums";
 
 const prisma = new PrismaClient()
 
@@ -21,11 +22,12 @@ const tagsData: Prisma.TagCreateInput[] = [
 ]
 
 type SeedMeal = {
-    name: string
-    tags: string[]
-    ingredients: string[]
-    description: string
-}
+  name: string;
+  tags: string[];
+  ingredients: string[];
+  description: string;
+  suggestedMealType: MealType[];
+};
 
 const mealsData: SeedMeal[] = [
     {
@@ -317,6 +319,7 @@ export async function main() {
             name: meal.name,
             ingredients: meal.ingredients,
             description: meal.description,
+            suggestedMealType: meal.suggestedMealType,
             tags: {
                 connect
             }

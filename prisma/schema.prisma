@@ -9,12 +9,13 @@ datasource db {
 }
 
 model Meal {
-  id          Int        @id @default(autoincrement())
-  name        String
-  ingredients String[]
-  description String
-  mealPlans   MealPlan[] //one to many
-  tags        Tag[]      @relation("MealTags")
+  id                Int        @id @default(autoincrement())
+  name              String
+  ingredients       String[]
+  description       String
+  mealPlans         MealPlan[]
+  suggestedMealType MealType[]
+  tags              Tag[]      @relation("MealTags")
 }
 
 enum DayOfWeek {
