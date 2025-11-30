@@ -15,7 +15,7 @@ export default function SidebarDays({ selectedDay, onSelectDay }: SidebarDaysPro
         <span
           key={day}
           onClick={() => onSelectDay(day)}
-          className={`w-full p-4 text-sm cursor-pointer
+          className={`w-full p-4 text-sm cursor-pointer text-violet-800
             ${selectedDay === day ? "bg-purple-200 font-semibold" : "hover:bg-purple-100"}
           `}
         >
