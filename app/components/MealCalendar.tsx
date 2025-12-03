@@ -131,6 +131,32 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
     );
   };
 
+  const parseRecipe = (recipe: string | null): string | null => {
+    if (!recipe) return null;
+
+    try {
+      const stepsCand = JSON.parse(recipe);
+
+      if (!Array.isArray(stepsCand)) {
+        console.error("Przepis jest w złym formacie");
+        return null;
+      }
+
+      const steps = stepsCand as string[];
+
+      const formattedSteps: string[] = steps.map((step, index) => {
+        return `${index + 1}. ${step.trim()}`;
+      });
+
+      return formattedSteps.join("\n");
+
+      
+      } catch (error) {
+      console.error("Błąd przy parsowaniu przepisu:", error);
+      return null;
+    }
+  }
+
   return (
     <>
       {showModal && selectedMeal && (
@@ -140,9 +166,12 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
               {selectedMeal.meal.name}
             </h2>
 
-            <p className="mb-4 text-sm text-gray-800">
-              {selectedMeal.meal.description}
-            </p>
+            <h2 className="mb-2 text-m font-bold text-gray-800">
+              Przepis:
+            </h2>
+            <pre className="mb-4 text-sm text-gray-800">
+              {parseRecipe(selectedMeal.meal.description)}
+            </pre>
 
             {selectedMeal.meal.ingredients?.length > 0 && (
               <div className="mb-4">
