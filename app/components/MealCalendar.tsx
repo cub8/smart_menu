@@ -171,14 +171,14 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
               </>
             )}
 
-            {selectedMeal.meal.ingredients?.length > 0 && (
+            {selectedMeal.meal.ingredients && Object.keys(selectedMeal.meal.ingredients).length > 0 && (
               <div className="mb-4">
                 <h3 className="mb-1 text-sm font-semibold text-gray-900">
                   Składniki:
                 </h3>
                 <ul className="list-disc space-y-1 pl-5 text-sm text-gray-800">
-                  {selectedMeal.meal.ingredients.map((ing, i) => (
-                    <li key={i}>{ing}</li>
+                  {Object.entries(selectedMeal.meal.ingredients).map(([ing, amount], i) => (
+                    <li key={i}>{ing}: {amount} g</li>
                   ))}
                 </ul>
               </div>
