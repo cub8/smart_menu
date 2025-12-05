@@ -61,3 +61,23 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+
+    if (!id) return NextResponse.json({ error: "Brak id" }, { status: 400 });
+
+    await prisma.mealPlan.delete({
+      where: { id: Number(id) },
+    });
+    return NextResponse.json({ message: "MealPlan usunięty poprawnie" }, { status: 200 });
+    
+  } catch (err) {
+    console.error("Błąd usuwania mealPlan:", err);
+    return NextResponse.json({ error: "Błąd serwera przy usuwaniu meal planu" }, { status: 500 }); 
+  }
+}
