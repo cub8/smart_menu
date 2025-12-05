@@ -85,14 +85,14 @@ export default async function MealsPage() {
                     </div>
                   ) : null}
 
-                  {meal.ingredients?.length ? (
+                  {meal.ingredients && Object.keys(meal.ingredients).length > 0 ? (
                     <div>
-                      <p className="text-sm font-medium text-zinc-200">
-                        Składniki:
-                      </p>
+                      <p className="text-sm font-medium text-zinc-200">Składniki:</p>
                       <ul className="mt-1 list-disc list-inside text-sm text-zinc-400 space-y-0.5">
-                        {meal.ingredients.map((ing, idx) => (
-                          <li key={idx}>{ing}</li>
+                        {Object.entries(meal.ingredients).map(([name, amount], idx) => (
+                          <li key={idx}>
+                            {name}: {amount}g
+                          </li>
                         ))}
                       </ul>
                     </div>
