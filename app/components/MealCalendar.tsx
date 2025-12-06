@@ -153,6 +153,7 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
 
   return (
     <>
+      {/* Popup ze szczegółami */}
       {showModal && selectedMeal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
@@ -177,7 +178,7 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
                 </h3>
                 <ul className="list-disc space-y-1 pl-5 text-sm text-gray-800">
                   {Object.entries(selectedMeal.meal.ingredients).map(([ing, amount], i) => (
-                    <li key={i}>{ing}: {amount} g</li>
+                    <li key={i}>{ing}: {amount}g</li>
                   ))}
                 </ul>
               </div>
@@ -193,6 +194,7 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
         </div>
       )}
 
+      {/* KALENDARZ */}
       <div className="mx-auto h-fit max-w-5xl">
         <FullCalendar
           key={isMobile ? "mobile" : "desktop"}
