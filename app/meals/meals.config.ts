@@ -31,7 +31,7 @@ export const mealsData: SeedMeal[] = [
 },
 {
     name: "Sałatka grecka",
-    tags: ["Wegetariańskie", "Nabiał", "Warzywa", "Szybkie"],
+    tags: ["Wegetariańskie", "Nabiał", "Warzywa", "Szybkie", "Sałatki"],
     ingredients: {
       "Sałata": 80,
       "Pomidor": 120,
@@ -275,7 +275,7 @@ export const mealsData: SeedMeal[] = [
 },
 {
     name: "Owocowa sałatka z miętą",
-    tags: ["Owoce", "Wegetariańskie"],
+    tags: ["Owoce", "Wegetariańskie", "Sałatki"],
     ingredients: {
       "Winogrona": 100,
       "Kiwi": 80,
@@ -332,7 +332,7 @@ export const mealsData: SeedMeal[] = [
 },
 {
     name: "Sałatka z kurczakiem i awokado",
-    tags: ["Mięso", "Kurczak", "Warzywa"],
+    tags: ["Mięso", "Kurczak", "Warzywa", "Sałatki"],
     ingredients: {
       "Pierś z kurczaka": 150,
       "Awokado": 120,
@@ -615,7 +615,7 @@ export const mealsData: SeedMeal[] = [
 },
 {
     name: "Sałatka owocowa z jogurtem waniliowym",
-    tags: ["Owoce", "Wegetariańskie", "Szybkie"],
+    tags: ["Owoce", "Wegetariańskie", "Szybkie", "Sałatki"],
     ingredients: {
       "Jabłko": 100,
       "Gruszka": 120,
@@ -845,7 +845,7 @@ export const mealsData: SeedMeal[] = [
 },
 {
     name: "Sałatka z tuńczykiem",
-    tags: ["Mięso", "Warzywa"],
+    tags: ["Mięso", "Warzywa", "Sałatki"],
     ingredients: {
       "Tuńczyk": 100,
       "Sałata": 60,
@@ -1174,7 +1174,7 @@ export const mealsData: SeedMeal[] = [
 },
 {
     name: "Sałatka caprese",
-    tags: ["Wegetariańskie", "Nabiał", "Warzywa"],
+    tags: ["Wegetariańskie", "Nabiał", "Warzywa", "Sałatki"],
     ingredients: {
       "Mozzarella": 120,
       "Pomidory": 150,
@@ -1688,4 +1688,189 @@ export const mealsData: SeedMeal[] = [
     description: "Śniadaniowa klasyka kuchni tureckiej.",
     suggestedMealType: [MealType.BREAKFAST],
 },
+{
+  name: "Sałatka z łososiem i awokado",
+  tags: ["Ryba", "Sałatki", "Warzywa", "Bezglutenowe"],
+  ingredients: {
+    "Łosoś wędzony": 100,
+    "Awokado": 120,
+    "Sałata mieszana": 80,
+    "Ogórek": 80,
+    "Oliwa": 10,
+    "Sok z cytryny": 10
+  },
+  recipe: [
+    "Pokrój awokado i ogórka.",
+    "Sałatę wymieszaj z oliwą i cytryną.",
+    "Dodaj łososia i podawaj."
+  ],
+  description: "Lekka i pożywna sałatka z łososia.",
+  suggestedMealType: [MealType.LUNCH]
+},
+{
+  name: "Owsianka bananowo-czekoladowa",
+  tags: ["Nabiał", "Owoce", "Czekolada"],
+  ingredients: {
+    "Płatki owsiane": 70,
+    "Mleko": 200,
+    "Banan": 120,
+    "Czekolada gorzka": 15
+  },
+  recipe: [
+    "Ugotuj owsiankę na mleku.",
+    "Dodaj pokrojonego banana.",
+    "Posyp posiekaną czekoladą."
+  ],
+  description: "Kremowa owsianka na słodki początek dnia.",
+  suggestedMealType: [MealType.BREAKFAST]
+},
+  {
+    name: "Smoothie truskawkowo-bananowe",
+    tags: ["Owoce", "Szybkie"],
+    ingredients: {
+      "Truskawki": 150,
+      "Banan": 120,
+      "Jogurt": 150
+    },
+    recipe: [
+      "Wrzuć wszystkie składniki do blendera.",
+      "Zmiksuj na gładko.",
+      "Podawaj schłodzone."
+    ],
+    description: "Owocowe smoothie idealne na lato.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DESSERT]
+  },
+  {
+    name: "Kanapka z serem i ogórkiem",
+    tags: ["Kanapka", "Wegetariańskie", "Szybkie"],
+    ingredients: {
+      "Pieczywo": 80,
+      "Ser żółty": 30,
+      "Ogórek": 60,
+      "Masło": 10
+    },
+    recipe: [
+      "Posmaruj pieczywo masłem.",
+      "Ułóż plasterki sera i ogórka.",
+      "Podawaj od razu."
+    ],
+    description: "Prosta kanapka na szybkie śniadanie.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DINNER]
+  },
+    {
+    name: "Tosty z szynką i serem",
+    tags: ["Kanapka", "Mięso", "Nabiał", "Szybkie"],
+    ingredients: {
+      "Chleb tostowy": 80,
+      "Szynka": 40,
+      "Ser": 40
+    },
+    recipe: [
+      "Ułóż szynkę i ser między kromkami.",
+      "Zapiecz w tosterze.",
+      "Podawaj gorące."
+    ],
+    description: "Proste, szybkie tosty.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DINNER]
+  },
+    {
+    name: "Kluski śląskie z sosem",
+    tags: ["Polskie", "Wegetariańskie", "Grzyby"],
+    ingredients: {
+      "Kluski śląskie": 250,
+      "Pieczarki": 200,
+      "Śmietanka": 100,
+      "Cebula": 80
+    },
+    recipe: [
+      "Ugotuj kluski śląskie.",
+      "Usmaż cebulę i dodaj pieczarki.",
+      "Poczekaj aż pieczarki puszczą sok, następnie dodaj śmietankę i duś do zgęstnienia.",
+      "Podawaj razem."
+    ],
+    description: "Tradycyjne kluski śląskie z sosem pieczarkowym.",
+    suggestedMealType: [MealType.DINNER]
+  },
+    {
+    name: "Gofry jogurtowe z nutellą",
+    tags: ["Szybkie", "Czekolada"],
+    ingredients: {
+      "Mąka": 80,
+      "Jogurt": 120,
+      "Jajko": 50,
+      "Cukier": 30,
+      "Nutella": 30
+    },
+    recipe: [
+      "Wymieszaj składniki.",
+      "Wlej ciasto do gofrownicy.",
+      "Piecz 4–5 minut.",
+      "Podawaj z nutellą."
+    ],
+    description: "Delikatne gofry bez masła.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DESSERT]
+  },
+  { 
+    name: "Gulasz z indyka",
+    tags: ["Mięso", "Warzywa"],
+    ingredients: {
+      "Indyk": 180,
+      "Papryka": 80,
+      "Cebula": 80,
+      "Bulion": 150
+    },
+    recipe: [
+      "Podsmaż indyka.",
+      "Dodaj warzywa.",
+      "Duś w bulionie 20 minut."
+    ],
+    description: "Lekki jednogarnkowy gulasz.",
+    suggestedMealType: [MealType.DINNER]
+  },
+  {
+    name: "Jajka na miękko z chlebem",
+    tags: ["Jajka", "Szybkie", "Wegetariańskie"],
+    ingredients: {
+      "Jajka": 100,
+      "Pieczywo": 60
+    },
+    recipe: [
+      "Ugotuj jajka na miękko (5–6 minut).",
+      "Podawaj z pieczywem."
+    ],
+    description: "Najprostsze śniadanie, ale zawsze smaczne.",
+    suggestedMealType: [MealType.BREAKFAST]
+  },
+  {
+    name: "Ryż z jabłkiem i cynamonem",
+    tags: ["Owoce", "Ryż", "Szybkie", "Wegetariańskie"],
+    ingredients: {
+      "Ryż": 90,
+      "Jabłko": 120,
+      "Cynamon": 2
+    },
+    recipe: [
+      "Ugotuj ryż.",
+      "Dodaj starte jabłko.",
+      "Posyp cynamonem."
+    ],
+    description: "Lekki słodki posiłek.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DESSERT]
+  },
+  {
+    name: "Parówki frankfurterki z żytnim pieczywem",
+    tags: ["Mięso", "Szybkie"],
+    ingredients: {
+      "Frankfurterki": 80,
+      "Bułka": 70
+    },
+    recipe: [
+      "Ugotuj frankfurterki.",
+      "Włóż do bułki.",
+      "Podawaj z ketchupem."
+    ],
+    description: "Szybki, prosty hot-dog.",
+    suggestedMealType: [MealType.BREAKFAST, MealType.DINNER]
+  },
+
 ];
