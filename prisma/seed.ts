@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma } from "@/app/generated/prisma/client"
 import bcrypt from "bcrypt";
-import { mealsData, SeedMeal } from "../app/meals/meals.config";
+import { mealsData} from "../app/meals/meals.config";
 
 const prisma = new PrismaClient()
 
@@ -23,7 +23,13 @@ const tagsData: Prisma.TagCreateInput[] = [
     { name: "Meksykańskie" },
     { name: "Czekolada" },
     { name: "Grzyby" },
-    { name: "Polskie" }
+    { name: "Polskie" },
+    { name: "Kurczak" },
+    { name: "Ryż" },
+    { name: "Makaron" },
+    { name: "Ciasto" },
+    { name: "Jajka" },
+    { name: "Kanapka" },
 ]
 
 
