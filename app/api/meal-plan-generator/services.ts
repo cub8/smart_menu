@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma"
 import { Prisma, MealType } from "@/app/generated/prisma/client";
+import strftime from "strftime"
 
 interface MealWithTags {
   id: number;
@@ -12,7 +13,31 @@ interface MealWithTags {
   }[];
 }
 
+export interface FailedToCreate {
+  weekday: string;
+  date: string;
+  mealType: string;
+  tags: string[];
+}
+
 type PlanGeneratorFormInput = Record<string, Record<MealType, number[]>>
+
+const weekDayLocaleMap: Record<string, string> = {
+  Monday: "Poniedziałek",
+  Tuesday: "Wtorek",
+  Wednesday: "Środa",
+  Thursday: "Czwartek",
+  Friday: "Piątek",
+  Saturday: "Sobota",
+  Sunday: "Niedziela"
+}
+
+const mealTypeLocaleMap: Record<string, string> = {
+  BREAKFAST: "Śniadanie",
+  LUNCH: "Obiad",
+  DINNER: "Kolacja",
+  DESSERT: "Deser"
+}
 
 function validateBody(body: PlanGeneratorFormInput) {
   const dates = Object.keys(body)
@@ -36,6 +61,39 @@ function validateBody(body: PlanGeneratorFormInput) {
   }
 }
 
+async function mealsByMealTypeAndTagIds(mealType: MealType, tagIds: number[]) {
+  return await prisma.meal.findMany({
+        where: { 
+          tags: { some: { id: { in: tagIds } } },
+          suggestedMealType: { has: mealType }
+        },
+        include: { tags: true }
+      });
+}
+
+async function mealsByTagIds(tagIds: number[]) {
+  return await prisma.meal.findMany({
+        where: { 
+          tags: { some: { id: { in: tagIds } } }
+        },
+        include: { tags: true }
+      });
+}
+
+async function buildFailedToCreateObject(tagIds: number[], parsedDate: Date, mealType: MealType) {
+  const formattedDate = strftime("%d.%m.%Y", parsedDate)
+  const weekday = weekDayLocaleMap[strftime("%A", parsedDate)]
+  const tags = (await prisma.tag.findMany({ where: { id: { in: tagIds}}})).map((tag) => tag.name)
+  const mealTypePolish = mealTypeLocaleMap[mealType]
+
+  return {
+    weekday,
+    date: formattedDate,
+    mealType: mealTypePolish,
+    tags,
+  }
+}
+
 function findBestMeal(meals: MealWithTags[], tagIds: number[]) {
   const scored = meals.map(m => ({
     ...m,
@@ -53,37 +111,45 @@ export async function generateMealPlan(body: PlanGeneratorFormInput, userId: str
   validateBody(body)
 
   const mealPlans: Prisma.MealPlanCreateManyInput[] = []
+  const failedToCreate: FailedToCreate[] = []
 
   for (const [date, mealTypes] of Object.entries(body)) {
     for (const mealType of Object.keys(mealTypes) as MealType[]) {
       const tagIds = mealTypes[mealType];
       if (!tagIds || tagIds.length === 0) continue;
 
-      const meals = await prisma.meal.findMany({
-        where: { 
-          tags: { some: { id: { in: tagIds } } },
-          suggestedMealType: { has: mealType }
-        },
-        include: { tags: true }
-      });
+      const parsedDate = new Date(Date.parse(date))
+      const mealsWithMealType = await mealsByMealTypeAndTagIds(mealType, tagIds)
 
-      if (!meals.length) continue;
+      console.log("MEals:", mealsWithMealType)
 
-      const bestMeal = findBestMeal(meals, tagIds);
-      const parsedDate = new Date(Date.parse(date));
+      const meal = await (async () => {
+        if (mealsWithMealType.length == 0) {
+          const failedToCreateObject = await buildFailedToCreateObject(tagIds, parsedDate, mealType)
+          failedToCreate.push(failedToCreateObject)
+
+          const mealsByTags = await mealsByTagIds(tagIds)
+
+          return findBestMeal(mealsByTags, tagIds)
+        }
+        else {
+          return findBestMeal(mealsWithMealType, tagIds)
+        }
+      })()
 
       const mealPlan = {
         date: parsedDate,
         type: mealType, 
-        mealId: bestMeal.id,
+        mealId: meal.id,
         userId
       };
-
-      console.log("Generated meal plan:", mealPlan);
 
       mealPlans.push(mealPlan);
     }
   }
 
-  return await prisma.mealPlan.createMany({ data: mealPlans });
+  const result = await prisma.mealPlan.createMany({ data: mealPlans })
+  const count = result.count
+
+  return { count, failedToCreate };
 }

@@ -1,9 +1,12 @@
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import MealCalendar from "../components/MealCalendar";
 import WeeklyPreferencesModal from "../components/GenerateMeals";
 import type { MealPlan, Meal } from "../generated/prisma/client";
+import { useFlashStore } from "@/lib/flashStore";
+import FlashNotices from "../components/FlashNotices";
+import { type FailedToCreate } from '../api/meal-plan-generator/services';
 
 type MealPlanWithMeal = MealPlan & { meal: Meal };
 
@@ -13,9 +16,14 @@ type PlannerClientProps = {
 
 export default function PlannerClient({ meals }: PlannerClientProps) {
   const [showWeeklyForm, setShowWeeklyForm] = useState(false);
+  const { flash } = useFlashStore();
 
   return (
     <div>
+      {
+        flash && <FlashNotices flashNotices={flash.payload as FailedToCreate[]} />
+      }
+
       <div className="mt-10 flex flex-col items-center gap-4">
         <h2 className="text-3xl text-purple-500">Twój plan posiłków</h2>
         <button

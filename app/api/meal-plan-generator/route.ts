@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
   }
   
   try {
-    const result = await generateMealPlan(body, session.user.id)
-    return NextResponse.json({ ok: true, count: result.count }, { status: 201 });
+    const { count, failedToCreate } = await generateMealPlan(body, session.user.id)
+    return NextResponse.json({ ok: true, count, failedToCreate }, { status: 201 });
   } catch (e) {
     return NextResponse.json({ error: (e as Error).message }, { status: 422 });
   }
