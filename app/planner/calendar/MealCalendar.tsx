@@ -153,9 +153,10 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
 
   return (
     <>
+      {/* Popup ze szczegółami */}
       {showModal && selectedMeal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
             <h2 className="mb-2 text-xl font-semibold text-purple-700">
               {selectedMeal.meal.name}
             </h2>
@@ -163,7 +164,7 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
             {formattedRecipe && (
               <>
                 <h2 className="mb-2 text-m font-bold text-gray-800">Przepis:</h2>
-                <pre className="mb-4 text-sm text-gray-800">
+                <pre className="mb-4 text-sm text-gray-800 whitespace-pre-wrap wrap-break-word">
                   {formattedRecipe}
                 </pre>
               </>
@@ -171,12 +172,12 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
 
             {selectedMeal.meal.ingredients && Object.keys(selectedMeal.meal.ingredients).length > 0 && (
               <div className="mb-4">
-                <h3 className="mb-1 text-sm font-semibold text-gray-900">
+                <h3 className="mb-1 text-sm font-semibold text-gray-900 text">
                   Składniki:
                 </h3>
                 <ul className="list-disc space-y-1 pl-5 text-sm text-gray-800">
                   {Object.entries(selectedMeal.meal.ingredients).map(([ing, amount], i) => (
-                    <li key={i}>{ing}: {amount} g</li>
+                    <li key={i}>{ing}: {amount}g</li>
                   ))}
                 </ul>
               </div>
@@ -221,6 +222,7 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
         </div>
       )}
 
+      {/* KALENDARZ */}
       <div className="mx-auto h-fit max-w-5xl">
         <FullCalendar
           key={isMobile ? "mobile" : "desktop"}
