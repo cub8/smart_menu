@@ -12,7 +12,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import plLocale from "@fullcalendar/core/locales/pl";
 import MealCardWeek from "./MealCardWeek";
 import MealCardMonth from "./MealCardMonth";
-import { MealPlan, Meal } from "../generated/prisma/client";
+import { MealPlan, Meal } from "../../generated/prisma/client";
 
 type MealPlanWithMeal = MealPlan & { meal: Meal };
 
@@ -131,42 +131,98 @@ const MealCalendar = ({ mealPlan }: MealCalendarProps) => {
     );
   };
 
+  const parseRecipe = (recipe?: string[] | null): string | null => {
+    if (!recipe || recipe.length === 0) return null;
+
+    try {
+      return recipe
+        .map((step, i) => `${i + 1}. ${step?.toString().trim()}`) 
+        .join("\n");
+    } catch (error) {
+      console.error("Błąd przy formatowaniu przepisu:", error);
+      return null;
+    }
+  };
+
+  const recipeArray = Array.isArray(selectedMeal?.meal.recipe)
+  ? (selectedMeal.meal.recipe as string[])
+  : null;
+
+  const formattedRecipe = parseRecipe(recipeArray);
+
+
   return (
     <>
+      {/* Popup ze szczegółami */}
       {showModal && selectedMeal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
             <h2 className="mb-2 text-xl font-semibold text-purple-700">
               {selectedMeal.meal.name}
             </h2>
 
-            <p className="mb-4 text-sm text-gray-800">
-              {selectedMeal.meal.description}
-            </p>
+            {formattedRecipe && (
+              <>
+                <h2 className="mb-2 text-m font-bold text-gray-800">Przepis:</h2>
+                <pre className="mb-4 text-sm text-gray-800 whitespace-pre-wrap wrap-break-word">
+                  {formattedRecipe}
+                </pre>
+              </>
+            )}
 
-            {selectedMeal.meal.ingredients?.length > 0 && (
+            {selectedMeal.meal.ingredients && Object.keys(selectedMeal.meal.ingredients).length > 0 && (
               <div className="mb-4">
-                <h3 className="mb-1 text-sm font-semibold text-gray-900">
+                <h3 className="mb-1 text-sm font-semibold text-gray-900 text">
                   Składniki:
                 </h3>
                 <ul className="list-disc space-y-1 pl-5 text-sm text-gray-800">
-                  {selectedMeal.meal.ingredients.map((ing, i) => (
-                    <li key={i}>{ing}</li>
+                  {Object.entries(selectedMeal.meal.ingredients).map(([ing, amount], i) => (
+                    <li key={i}>{ing}: {amount}g</li>
                   ))}
                 </ul>
               </div>
             )}
 
-            <button
-              onClick={() => setShowModal(false)}
-              className="rounded-lg bg-purple-500 px-4 py-2 text-sm font-medium text-white hover:bg-purple-600"
-            >
-              Zamknij
-            </button>
+            { /* Przyciski na dole */}
+            <div className="flex justify-between"> 
+
+              <button
+                onClick={() => setShowModal(false)}
+                className="rounded-lg bg-purple-500 px-4 py-2 text-sm font-medium text-white hover:bg-purple-600"
+              >
+                Zamknij
+              </button>
+
+                <button 
+                onClick={async () => {
+                  if (!selectedMeal) return;
+
+                  if (!confirm("Czy na pewno chcesz usunąć ten posiłek z planu?")) return;
+
+                  try { 
+                    const res = await fetch(`/api/meal-plan/${selectedMeal.id}`, {method: "DELETE", });
+                    if (!res.ok) throw new Error("Nieudane usunięcie posiłku z planu");
+
+                    setEvents(prev => prev.filter(ev => ev.id !== String(selectedMeal.id)));
+                    setShowModal(false);
+
+                  } catch (error) {
+                    console.error("Błąd przy usuwaniu posiłku z planu:", error);
+                    alert("Nie udało się usunąć posiłku");
+                  }
+
+                }}
+                className="rounded-lg bg-red-400 px-4 py-2 text-sm font-sans text-white hover:bg-red-700"
+                > 
+                Usuń posiłek
+                </button>
+            </div>
+
           </div>
         </div>
       )}
 
+      {/* KALENDARZ */}
       <div className="mx-auto h-fit max-w-5xl">
         <FullCalendar
           key={isMobile ? "mobile" : "desktop"}
