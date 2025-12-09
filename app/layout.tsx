@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import LogoutButton from "./components/LogoutButton";
+import ProfileButton from "./components/ProfileButton";
 import Link from "next/link";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -29,12 +30,7 @@ export default function RootLayout({
               </Link>
 
               <div className="flex items-center gap-3">
-                <Link
-                  href="/profile"
-                  className="rounded-xl border border-purple-300 px-3 py-1 text-sm text-purple-700 hover:bg-purple-100"
-                >
-                  Profil
-                </Link>
+                <ProfileButton />
                 <LogoutButton />
               </div>
             </div>
