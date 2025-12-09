@@ -2,7 +2,7 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { DAYS, type Day, type MealType } from "../week-preferences/types";
 import { formatDateYMD } from "./date";
-
+import { useFlashStore } from "@/lib/flashStore";
 
 export async function submitForm(
   selectedByMeal: Record<Day, Record<MealType, Set<number>>>, 
@@ -37,7 +37,15 @@ export async function submitForm(
     console.error("POST /api/meal-plan-generator nieudany", await res.text());
   }
 
+  const responseBody = await res.json()
+  const failedToCreate = responseBody.failedToCreate 
   const weekStartParam = weekStart.toLocaleDateString()
+
+  useFlashStore.getState().setFlash({
+    type: "error",
+    payload: failedToCreate
+  })
+  
   router.push(`/planner?weekStart=${weekStartParam}`)
 
   onClose()
