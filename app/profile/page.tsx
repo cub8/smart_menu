@@ -14,7 +14,7 @@ export default async function ProfilePage() {
   }
 
   const [tags, preferences] = await Promise.all([
-    prisma.tag.findMany({ orderBy: { name: "asc" } }),
+    prisma.tag.findMany({ where: { section: "UNIVERSAL" }, orderBy: { name: "asc" } }),
     prisma.userPreference.findMany({
       where: { userId: session.user.id },
       select: { tagId: true, dayOfWeek: true },
