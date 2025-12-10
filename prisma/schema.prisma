@@ -29,9 +29,15 @@ enum DayOfWeek {
   SUNDAY
 }
 
+enum TagSection {
+  UNIVERSAL
+  SPECIFIC
+}
+
 model Tag {
   id              Int              @id @default(autoincrement())
   name            String
+  section         TagSection       @default(UNIVERSAL)
   userPreferences UserPreference[]
   meals           Meal[]           @relation("MealTags")
 }

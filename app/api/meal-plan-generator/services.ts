@@ -1,15 +1,18 @@
 import prisma from "@/lib/prisma"
-import { Prisma, MealType } from "@/app/generated/prisma/client";
+import { Prisma, MealType, TagSection } from "@/app/generated/prisma/client";
 import strftime from "strftime"
+import { JsonValue } from "@prisma/client/runtime/library";
 
 interface MealWithTags {
   id: number;
   name: string;
-  ingredients: string[];
-  description: string;
+  ingredients: JsonValue;
+  recipe?: JsonValue;
+  description: string | null;
   tags: {
     id: number;
     name: string;
+    section: TagSection;
   }[];
 }
 
@@ -121,8 +124,6 @@ export async function generateMealPlan(body: PlanGeneratorFormInput, userId: str
       const parsedDate = new Date(Date.parse(date))
       const mealsWithMealType = await mealsByMealTypeAndTagIds(mealType, tagIds)
 
-      console.log("MEals:", mealsWithMealType)
-
       const meal = await (async () => {
         if (mealsWithMealType.length == 0) {
           const failedToCreateObject = await buildFailedToCreateObject(tagIds, parsedDate, mealType)
@@ -136,6 +137,10 @@ export async function generateMealPlan(body: PlanGeneratorFormInput, userId: str
           return findBestMeal(mealsWithMealType, tagIds)
         }
       })()
+
+      if (meal === undefined) {
+        continue 
+      }
 
       const mealPlan = {
         date: parsedDate,

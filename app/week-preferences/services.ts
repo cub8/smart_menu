@@ -34,7 +34,7 @@ export async function submitForm(
   });
 
   if (!res.ok) {
-    console.error("POST /api/meal-plan-generator nieudany", await res.text());
+    return console.error("POST /api/meal-plan-generator nieudany", await res.text());
   }
 
   const responseBody = await res.json()
