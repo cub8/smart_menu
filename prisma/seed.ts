@@ -4,6 +4,14 @@ import { mealsData} from "../app/meals/meals.config";
 
 const prisma = new PrismaClient()
 
+const UNIVERSAL_TAG_NAMES = [
+    "Wegetariańskie",
+    "Bezglutenowe",
+    "Wegańskie",
+    "Szybkie",
+    "Przekąska",
+] as const
+
 const tagsData: Prisma.TagCreateInput[] = [
     { name: "Nabiał" },
     { name: "Wegetariańskie" },
@@ -76,6 +84,16 @@ const mealPlanData: SeedMealPlan[] = [
 export async function main() {
     // Seed tags
     await prisma.tag.createMany({ data: tagsData, skipDuplicates: true })
+
+    await prisma.tag.updateMany({
+        where: { name: { in: Array.from(UNIVERSAL_TAG_NAMES) } },
+        data: { section: "UNIVERSAL" },
+    })
+
+    await prisma.tag.updateMany({
+        where: { name: { notIn: Array.from(UNIVERSAL_TAG_NAMES) } },
+        data: { section: "SPECIFIC" },
+    })
 
     // Seed meals
     const tagNames = tagsData.map(t => t.name)
