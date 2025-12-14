@@ -97,7 +97,7 @@ async function buildFailedToCreateObject(tagIds: number[], parsedDate: Date, mea
   }
 }
 
-function findBestMeal(meals: MealWithTags[], tagIds: number[]) {
+export function findBestMeal(meals: MealWithTags[], tagIds: number[]) {
   const scored = meals.map(m => ({
     ...m,
     score: m.tags.filter(t => tagIds.includes(t.id)).length

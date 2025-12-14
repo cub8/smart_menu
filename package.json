@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:prepare": "dotenv -e .env.test -- prisma migrate deploy",
+    "test": "npm run test:prepare && dotenv -e .env.test -- vitest",
+    "test:watch": "dotenv -e .env.test -- vitest --watch"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.19",
@@ -26,15 +29,22 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/react": "^16.3.0",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/strftime": "^0.9.8",
+    "@vitejs/plugin-react": "^5.1.2",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.1",
+    "jsdom": "^27.3.0",
     "prisma": "^6.19.0",
     "tsx": "^4.20.6",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.15"
   }
 }
