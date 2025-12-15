@@ -1,0 +1,56 @@
+name: Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # This creates a fresh Postgres container for every workflow run
+    services:
+      postgres:
+        image: postgres:18.1-alpine
+        env:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # Ensure the Prisma Client is generated based on your schema
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: "postgresql://myuser:mypassword@localhost:5432/testdb?schema=smartmenu_test"
+
+      - name: Run Tests
+        run: npm run test
+        env:
+          DATABASE_URL: "postgresql://myuser:mypassword@localhost:5432/testdb?schema=smartmenu_test"
+          NEXTAUTH_SECRET: "KX7Jm/lZX8XcD9O2jcdJ4aj6rRycQ8YfS9Tj8rwBDjA="
+          MOCK_AUTH: true
+          NEXTAUTH_URL: "http://localhost:3000"
+          NODE_ENV: true
+      

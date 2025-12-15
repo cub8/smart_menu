@@ -50,3 +50,12 @@ Polecenie to:
 3. Jeśli obecny jest plik `seed.ts` - również uzupełnia danymi startowymi
 
 Sprawdza się podczas testowania przy częstych zmianach w pliku `seed.ts`.
+
+### Testy
+
+Aby uruchomić testy należy utworzyć plik `.env.test` na bazie pliku `.env.test.example` z przekierowaniem do testowej bazy danych. Jak nasza baza nazywa się `smartmenu` to testowa powinna się nazywać `smartmenu_test`.
+
+Aby uruchomić testy należy wpisać komendę: `npm run test`.
+
+Jeżeli po uruchomieniu masz taki wynik to wszystko działa dobrze.
+![Obrazek przedstawiający informację o pozytywnym wykonaniu jednego testu](docs/test_run.png)
