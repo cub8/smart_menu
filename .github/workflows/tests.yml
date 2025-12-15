@@ -42,12 +42,7 @@ jobs:
       # Ensure the Prisma Client is generated based on your schema
       - name: Generate Prisma Client
         run: npx prisma generate
-
-      # Push the schema to the ephemeral CI database
-      - name: Run Prisma Migrations
-        run: npx prisma migrate deploy
         env:
-          # Connect to the service container defined above
           DATABASE_URL: "postgresql://myuser:mypassword@localhost:5432/testdb?schema=smartmenu_test"
 
       - name: Run Tests
