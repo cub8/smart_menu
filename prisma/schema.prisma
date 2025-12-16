@@ -17,6 +17,8 @@ model Meal {
   mealPlans         MealPlan[]
   suggestedMealType MealType[]
   tags              Tag[]      @relation("MealTags")
+  userId            String?    // null means it's a system meal, otherwise it's user-specific
+  user              User?      @relation(fields: [userId], references: [id])
 }
 
 enum DayOfWeek {
@@ -50,6 +52,7 @@ model User {
   createdAt   DateTime         @default(now())
   mealPlans   MealPlan[] //one to many
   preferences UserPreference[]
+  meals       Meal[]           // user-created meals
 }
 
 enum MealType {
