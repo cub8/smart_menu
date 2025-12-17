@@ -17,7 +17,7 @@ model Meal {
   mealPlans         MealPlan[]
   suggestedMealType MealType[]
   tags              Tag[]      @relation("MealTags")
-  userId            String?    // null means it's a system meal, otherwise it's user-specific
+  userId            String?    
   user              User?      @relation(fields: [userId], references: [id])
 }
 

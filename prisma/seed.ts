@@ -114,6 +114,7 @@ export async function main() {
         await prisma.meal.create({ data: {
             name: meal.name,
             ingredients: meal.ingredients,
+            userId: null,
             description: meal.description,
             recipe: meal.recipe ?? undefined, // moze nie byc przepisu
             suggestedMealType: meal.suggestedMealType,
