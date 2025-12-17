@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import { MealType } from "@/app/generated/prisma/enums";
+import { getSession } from "@/lib/auth";
+import DeleteMealButton from "./DeleteMealButton";
 
 const mealTypeLabels: Record<MealType, string> = {
   BREAKFAST: "Śniadanie",
@@ -10,7 +12,17 @@ const mealTypeLabels: Record<MealType, string> = {
 };
 
 export default async function MealsPage() {
+  const session = await getSession();
+  const userId = session?.user?.id;
+
+
   const meals = await prisma.meal.findMany({
+    where: {
+      OR: [
+        { userId: null }, 
+        { userId: userId || "" }, 
+      ],
+    },
     orderBy: { id: "asc" },
     include: { tags: true },
   });
@@ -44,9 +56,19 @@ export default async function MealsPage() {
                 className="group rounded-xl border border-zinc-800 bg-zinc-900/60 shadow-sm transition-colors hover:bg-zinc-900"
               >
                 <div className="p-5">
-                  <h2 className="text-lg font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors">
-                    {meal.name}
-                  </h2>
+                  <div className="flex items-start justify-between mb-2">
+                    <h2 className="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors">
+                      {meal.name}
+                    </h2>
+                    {meal.userId && (
+                      <div className="flex items-center gap-1">
+                        <span className="text-[10px] uppercase tracking-wide bg-blue-900/40 text-blue-200 px-2 py-1 rounded-full border border-blue-700/60">
+                          Twój
+                        </span>
+                        <DeleteMealButton mealId={meal.id} mealName={meal.name} />
+                      </div>
+                    )}
+                  </div>
 
                   {meal.suggestedMealType && meal.suggestedMealType.length > 0 && (
                     <div className="mb-3">
