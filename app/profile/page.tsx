@@ -47,6 +47,9 @@ export default async function ProfilePage() {
   return (
     <div className="mt-10 flex justify-center">
       <div className="w-full max-w-3xl bg-white rounded-2xl shadow p-6">
+        <h1 className="text-3xl font-bold mb-6 text-purple-800">
+          Witaj, {session.user.name}!
+        </h1>
         <h1 className="text-2xl font-bold mb-4 text-purple-800">
           Szablony preferencji na dni tygodnia
         </h1>
