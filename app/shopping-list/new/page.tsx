@@ -5,14 +5,32 @@ import { useState } from "react"
 
 export default function NewShoppingListPage() {
   const router = useRouter()
-
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
 
-  function handleGenerate() {
-    router.push(
-      `/shopping-list?start=${start}&end=${end}`
-    )
+  async function handleGenerate() {
+    if (!start || !end) {
+      alert("Wybierz zarówno datę początkową, jak i końcową")
+      return
+    }
+
+    try {
+      const res = await fetch("/api/shopping-list", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ start, end }),
+        cache: "no-store",
+      })
+
+      if (!res.ok) {
+        throw new Error("Nie udało się wygenerować listy zakupów")
+      }
+
+      router.push("/shopping-list")
+    } catch (err) {
+      console.error(err)
+      alert("Wystąpił błąd przy tworzeniu listy zakupów")
+    }
   }
 
   return (
@@ -21,25 +39,20 @@ export default function NewShoppingListPage() {
         Nowa lista zakupów
       </h1>
 
-      <div className="flex flex-col gap-4">
+      {/* Proste wprowadzanie dat*/}
+      <div className="flex flex-col gap-4 border p-4 rounded-lg">
         <input
           type="date"
           value={start}
           onChange={e => setStart(e.target.value)}
-          className="rounded border p-2"
         />
-
         <input
           type="date"
           value={end}
           onChange={e => setEnd(e.target.value)}
-          className="rounded border p-2"
         />
 
-        <button
-          onClick={handleGenerate}
-          className="rounded bg-violet-600 py-2 text-white hover:bg-violet-700"
-        >
+        <button onClick={handleGenerate}>
           Generuj listę
         </button>
       </div>

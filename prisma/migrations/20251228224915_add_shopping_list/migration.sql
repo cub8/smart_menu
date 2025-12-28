@@ -5,6 +5,7 @@ CREATE TABLE "ShoppingList" (
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "items" JSONB NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "ShoppingList_pkey" PRIMARY KEY ("id")
 );

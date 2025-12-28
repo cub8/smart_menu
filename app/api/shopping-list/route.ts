@@ -2,16 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
     const session = await getSession();
     if (!session?.user?.id) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { searchParams } = new URL(request.url)
-
-    const start = searchParams.get("start")
-    const end = searchParams.get("end")
+    const {start, end} = await request.json();
 
     if (!start || !end) {
         return NextResponse.json(
@@ -51,9 +48,20 @@ export async function GET(request: NextRequest) {
         }
     }
 
-    const shoppingList = Array.from(shoppingListMap.entries())
+    const shoppingListItems = Array.from(shoppingListMap.entries())
     .map(([name, amount]) => ({name,amount,}))
     .sort((a, b) => a.name.localeCompare(b.name))   
+
+    // 
+
+    const shoppingList = await prisma.shoppingList.create({
+        data: {
+            userId: session.user.id,
+            startDate: startDate,
+            endDate: endDate,
+            items: shoppingListItems,
+        },
+    });
 
     return NextResponse.json({ shoppingList } )
 

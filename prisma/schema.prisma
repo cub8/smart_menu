@@ -90,4 +90,5 @@ model ShoppingList {
   startDate DateTime
   endDate   DateTime
   items     Json
+  createdAt DateTime @default(now()) 
 }
