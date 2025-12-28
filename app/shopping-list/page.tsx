@@ -14,7 +14,7 @@ export default async function ShoppingListPage() {
   return (
     <div className="mx-auto max-w-4xl p-10">
       <h1 className="text-3xl font-semibold text-violet-600 mb-4">
-        Lista zakupów
+        Listy zakupowe
       </h1>
 
       {lists.length === 0 ? (
