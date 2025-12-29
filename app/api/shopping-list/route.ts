@@ -63,12 +63,12 @@ export async function POST(request: NextRequest) {
         },
     });
 
-    return NextResponse.json({ shoppingList } )
+    return NextResponse.json({ shoppingList }, { status: 201 });
 
 
     } catch (error) {
         return NextResponse.json(
-            { error: "Błąd podczas pobierania planów posiłków" },
+            { error: "Błąd podczas tworzenia listy zakupów" },
             { status: 500 }
         );
     }

@@ -22,11 +22,11 @@ export default async function ShoppingListPage() {
       ) : (
 
         // bardzo proste przekierowanie do list
-        <ul>
+        <ul className="space-y-2 text-xl text-violet-800">
           {lists.map(list => (
-            <li key={list.id}>
+            <li key={list.id} className="hover:text-violet-950 hover:underline">
               <a href={`/shopping-list/${list.id}`}>
-                {list.startDate.toISOString().slice(0, 10)} → {list.endDate.toISOString().slice(0, 10)}
+                ▫︎ {list.startDate.toISOString().slice(0, 10)} → {list.endDate.toISOString().slice(0, 10)}
               </a>
             </li>
           ))}
