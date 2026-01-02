@@ -117,4 +117,22 @@ describe("POST /api/shopping-list", () => {
 
   });
 
+    it("zwraca 401 jeśli użytkownik niezalogowany", async () => {
+    vi.mocked(getSession).mockResolvedValue(null as any);
+
+    const { POST } = await import("@/app/api/shopping-list/route");
+
+    const req = new NextRequest("http://localhost/api/shopping-list", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ start: "2025-12-22", end: "2025-12-22" }),
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(401);
+
+    const payload = await res.json();
+    expect(payload.error).toBe("Unauthorized");
+  });
+
 });
