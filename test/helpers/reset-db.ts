@@ -1,5 +1,3 @@
-// src/tests/helpers/reset-db.ts
-
 import prisma from "@/lib/prisma"
 
 export default async function resetDB() {

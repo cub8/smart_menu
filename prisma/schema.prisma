@@ -17,7 +17,7 @@ model Meal {
   mealPlans         MealPlan[]
   suggestedMealType MealType[]
   tags              Tag[]      @relation("MealTags")
-  userId            String?    
+  userId            String?
   user              User?      @relation(fields: [userId], references: [id])
 }
 
@@ -52,7 +52,7 @@ model User {
   createdAt   DateTime         @default(now())
   mealPlans   MealPlan[] //one to many
   preferences UserPreference[]
-  meals       Meal[]           // user-created meals
+  meals       Meal[] // user-created meals
 }
 
 enum MealType {

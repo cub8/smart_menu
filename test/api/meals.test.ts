@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import prisma from "@/lib/prisma";
-import { createTag } from "../helpers/records_creator";
+import tagFactory from "@/test/factories/tag_factory"
+import userFactory from "@/test/factories/user_factory"
 
 vi.mock("@/lib/auth", () => ({
   getSession: vi.fn(),
@@ -15,22 +16,12 @@ describe("POST /api/meals", () => {
   });
 
   it("creates a meal owned by the current user and connects tags", async () => {
-    const userId = "user_1";
-
-    await prisma.user.create({
-      data: {
-        id: userId,
-        email: "user_1@example.com",
-        password: "hashed-password",
-        name: "User 1",
-      },
-    });
-
-    const tag1 = await createTag("Wegetariańskie");
-    const tag2 = await createTag("Szybkie");
+    const user = await userFactory.create()
+    const tag1 = await tagFactory.vegetarian().create()
+    const tag2 = await tagFactory.quick().create()
 
     vi.mocked(getSession).mockResolvedValue({
-      user: { id: userId },
+      user: { id: user.id },
     } as any);
 
     const { POST } = await import("@/app/api/meals/route");
@@ -54,13 +45,13 @@ describe("POST /api/meals", () => {
     const payload = await res.json();
     expect(payload.ok).toBe(true);
     expect(payload.meal.name).toBe("Owsianka");
-    expect(payload.meal.userId).toBe(userId);
+    expect(payload.meal.userId).toBe(user.id);
     expect(payload.meal.tags.map((t: any) => t.id).sort()).toEqual(
       [tag1.id, tag2.id].sort()
     );
 
     const created = await prisma.meal.findFirst({
-      where: { name: "Owsianka", userId },
+      where: { name: "Owsianka", userId: user.id },
       include: { tags: true },
     });
 
