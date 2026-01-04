@@ -10,11 +10,11 @@ describe("findBestMeal", () => {
     const fruitsTag = await tagFactory.fruits().create()
     const meatTag = await tagFactory.meat().create()
     const veganTag = await tagFactory.vegan().create()
-    const fastTag = await tagFactory.quick().create()
+    const quickTag = await tagFactory.quick().create()
 
     const meal1 = await mealFactory.create({
       name: "Owsianka z Owocami",
-      tags: [vegetarianTag, fruitsTag, fastTag, noGlutenTag]
+      tags: [vegetarianTag, fruitsTag, quickTag, noGlutenTag]
     })
     const meal2 = await mealFactory.create({
       name: "Kotlet schabowy",
@@ -26,7 +26,7 @@ describe("findBestMeal", () => {
     })
 
     const meals = [meal1, meal2, meal3]
-    const searchedTags = [vegetarianTag.id, fastTag.id, veganTag.id]
+    const searchedTags = [vegetarianTag.id, quickTag.id, veganTag.id]
     const bestMeal = findBestMeal(meals, searchedTags)
 
     expect(bestMeal.name).toBe("Owsianka z Owocami")

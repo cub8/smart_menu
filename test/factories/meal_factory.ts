@@ -3,7 +3,7 @@ import { Factory } from "fishery"
 import { Prisma, type Meal, type Tag} from "@/app/generated/prisma/client"
 import { JsonValue } from "@prisma/client/runtime/library"
 
-interface MealWithTags extends Meal {
+export interface MealWithTags extends Meal {
   tags: Tag[];
 }
 
