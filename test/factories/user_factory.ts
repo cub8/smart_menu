@@ -2,13 +2,7 @@ import prisma from "@/lib/prisma"
 import { Factory } from "fishery"
 import { User } from "@/app/generated/prisma/client"
 
-type UserParams = {
-  name?: string
-  email?: string
-  password?: string
-}
-
-class UserFactory extends Factory<User, UserParams> {}
+class UserFactory extends Factory<User> {}
 
 const userFactory = UserFactory.define(({ sequence, params, onCreate }) => {
   onCreate((user) => {

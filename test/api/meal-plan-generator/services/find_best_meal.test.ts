@@ -1,8 +1,7 @@
 import { describe, it, expect } from "vitest"
-import prisma from "@/lib/prisma"
-import { toIdsArray } from "@test/helpers/records_creator"
 import { findBestMeal } from "@/app/api/meal-plan-generator/services"
 import tagFactory from "@/test/factories/tag_factory"
+import mealFactory from "@/test/factories/meal_factory"
 
 describe("findBestMeal", () => {
   it('finds the meal with the most matched tags', async () => {
@@ -13,35 +12,17 @@ describe("findBestMeal", () => {
     const veganTag = await tagFactory.vegan().create()
     const fastTag = await tagFactory.quick().create()
 
-    const meal1 = await prisma.meal.create({
-      data: {
-        name: "Owsianka z Owocami",
-        ingredients: {},
-        tags: {
-          connect: toIdsArray([vegetarianTag, fruitsTag, fastTag, noGlutenTag])
-        }
-       },
-       include: { tags: true }
+    const meal1 = await mealFactory.create({
+      name: "Owsianka z Owocami",
+      tags: [vegetarianTag, fruitsTag, fastTag, noGlutenTag]
     })
-    const meal2 = await prisma.meal.create({
-      data: {
-        name: "Kotlet schabowy",
-        ingredients: {},
-        tags: {
-          connect: toIdsArray([meatTag])
-        }
-       },
-       include: { tags: true }
+    const meal2 = await mealFactory.create({
+      name: "Kotlet schabowy",
+      tags: [meatTag]
     })
-    const meal3 = await prisma.meal.create({
-      data: {
-        name: "Makaron bez niczego",
-        ingredients: {},
-        tags: {
-          connect: toIdsArray([veganTag])
-        }
-       },
-       include: { tags: true }
+    const meal3 = await mealFactory.create({
+      name: "Makaron bez niczego",
+      tags: [veganTag]
     })
 
     const meals = [meal1, meal2, meal3]
