@@ -45,14 +45,15 @@ model Tag {
 }
 
 model User {
-  id          String           @id @default(cuid())
-  email       String           @unique
-  password    String
-  name        String?
-  createdAt   DateTime         @default(now())
-  mealPlans   MealPlan[] //one to many
-  preferences UserPreference[]
-  meals       Meal[] // user-created meals
+  id            String           @id @default(cuid())
+  email         String           @unique
+  password      String
+  name          String?
+  createdAt     DateTime         @default(now())
+  mealPlans     MealPlan[] //one to many
+  preferences   UserPreference[]
+  meals         Meal[] // user-created meals
+  shoppingLists ShoppingList[]
 }
 
 enum MealType {
@@ -80,4 +81,14 @@ model UserPreference {
   tag       Tag       @relation(fields: [tagId], references: [id])
 
   @@id([userId, dayOfWeek, tagId])
+}
+
+model ShoppingList {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  startDate DateTime
+  endDate   DateTime
+  items     Json
+  createdAt DateTime @default(now()) 
 }
