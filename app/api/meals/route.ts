@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         name: body.name,
         description: body.description || null,
         ingredients: body.ingredients,
-        recipe: body.recipe || null,
+        recipe: body.recipe || [],
         suggestedMealType: body.suggestedMealType,
         userId: session.user.id,
         tags: {
