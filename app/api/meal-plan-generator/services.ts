@@ -66,7 +66,7 @@ function validateBody(body: PlanGeneratorFormInput) {
 
 async function mealsByMealTypeAndTagIds(mealType: MealType, tagIds: number[]) {
   return await prisma.meal.findMany({
-        where: { 
+        where: {
           tags: { some: { id: { in: tagIds } } },
           suggestedMealType: { has: mealType }
         },
@@ -74,10 +74,10 @@ async function mealsByMealTypeAndTagIds(mealType: MealType, tagIds: number[]) {
       });
 }
 
-async function mealsByTagIds(tagIds: number[]) {
+async function mealsByMealType(mealType: MealType) {
   return await prisma.meal.findMany({
-        where: { 
-          tags: { some: { id: { in: tagIds } } }
+        where: {
+          suggestedMealType: { has: mealType }
         },
         include: { tags: true }
       });
@@ -129,9 +129,9 @@ export async function generateMealPlan(body: PlanGeneratorFormInput, userId: str
           const failedToCreateObject = await buildFailedToCreateObject(tagIds, parsedDate, mealType)
           failedToCreate.push(failedToCreateObject)
 
-          const mealsByTags = await mealsByTagIds(tagIds)
+          const mealsByType = await mealsByMealType(mealType)
 
-          return findBestMeal(mealsByTags, tagIds)
+          return findBestMeal(mealsByType, tagIds)
         }
         else {
           return findBestMeal(mealsWithMealType, tagIds)
@@ -139,12 +139,12 @@ export async function generateMealPlan(body: PlanGeneratorFormInput, userId: str
       })()
 
       if (meal === undefined) {
-        continue 
+        continue
       }
 
       const mealPlan = {
         date: parsedDate,
-        type: mealType, 
+        type: mealType,
         mealId: meal.id,
         userId
       };
