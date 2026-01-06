@@ -1,0 +1,21 @@
+import prisma from "@/lib/prisma"
+import { Factory } from "fishery"
+import { User } from "@/app/generated/prisma/client"
+
+class UserFactory extends Factory<User> {}
+
+const userFactory = UserFactory.define(({ sequence, params, onCreate }) => {
+  onCreate((user) => {
+    return prisma.user.create({ data: user });
+  })
+
+  return {
+    id: `user_${sequence}`,
+    name: params.name || `User ${sequence}`,
+    email: params.email || `user_${sequence}@example.com`,
+    password: params.password || "hashed-password",
+    createdAt: new Date()
+  }
+})
+
+export default userFactory
