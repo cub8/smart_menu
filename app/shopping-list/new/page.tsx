@@ -1,12 +1,19 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { getMonday, formatDateYMD } from "@/app/week-preferences/date"
 
 export default function NewShoppingListPage() {
   const router = useRouter()
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
+  
+
+  useEffect(() => {
+    const monday = formatDateYMD(getMonday(new Date()))
+    setStart(monday)
+  }, [])
 
   async function handleGenerate() {
     if (!start || !end) {
