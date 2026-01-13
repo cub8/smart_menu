@@ -41,12 +41,21 @@ export default async function ShoppingListDetailPage({ params }: Props) {
           </p>
         </div>
 
-        <Link
-          href="/shopping-list"
-          className="rounded-xl border border-purple-300 px-3 py-1 text-sm text-purple-200 hover:bg-purple-100/10 transition"
-        >
-          ← Wróć
-        </Link>
+        <div className="flex flex-col items-end gap-2">
+          <Link
+            href="/shopping-list"
+            className="rounded-xl border border-purple-300 px-3 py-1 text-sm text-purple-200 hover:bg-purple-100/10 transition"
+          >
+            ← Wróć
+          </Link>
+
+          <a
+            href={`/api/shopping-list/${listId}/pdf`}
+            className="rounded-xl border border-zinc-700 px-3 py-1 text-sm text-zinc-100 hover:bg-zinc-800/60 transition"
+          >
+            Pobierz PDF
+          </a>
+        </div>
       </div>
 
       <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6">
