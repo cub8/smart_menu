@@ -22,6 +22,8 @@
     "lucide-react": "^0.556.0",
     "next": "^16.0.10",
     "next-auth": "^4.24.13",
+    "pdf-lib": "^1.17.1",
+    "@pdf-lib/fontkit": "^1.1.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "strftime": "^0.10.3",
