@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { getMonday, formatDateYMD } from "@/app/week-preferences/date"
 
 function formatDDMMYY(value: string) {
   if (!value) return "";
@@ -15,6 +16,11 @@ export default function NewShoppingListPage() {
   const router = useRouter();
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+
+  useEffect(() => {
+    const monday = formatDateYMD(getMonday(new Date()))
+    setStart(monday)
+  }, [])
 
   const hint = useMemo(() => {
     if (!start && !end) return null;
