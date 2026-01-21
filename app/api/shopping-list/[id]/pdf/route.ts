@@ -44,13 +44,13 @@ export async function GET(_req: NextRequest, context: Ctx) {
   const fontBytes = await fs.readFile(
     process.cwd() + "/public/fonts/Roboto-Regular.ttf",
   );
-  const page = pdfDoc.addPage();
-  const { width } = page.getSize();
+  let page = pdfDoc.addPage();
+  let { width, height } = page.getSize();
 
   const font = await pdfDoc.embedFont(fontBytes);
   const boldFont = font;
 
-  let y = page.getSize().height - 72;
+  let y = height - 72;
 
   const title = "Lista zakupów";
   const titleSize = 20;
@@ -121,8 +121,9 @@ export async function GET(_req: NextRequest, context: Ctx) {
       const textColor = isEvenRow ? rgb(0, 0, 0) : rgb(0.4, 0.4, 0.4);
 
       if (y < 72) {
-        const newPage = pdfDoc.addPage();
-        y = newPage.getSize().height - 72;
+        page = pdfDoc.addPage();
+        ({ width, height } = page.getSize());
+        y = height - 72;
 
         page.drawText("Produkt", {
           x: nameX,
